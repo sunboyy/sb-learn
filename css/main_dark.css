@@ -1,0 +1,68 @@
+@charset "UTF-8";
+body {
+	background-color: #000;
+	color: #fff;
+}
+/* New */
+.title {
+	color: #38f;
+}
+.groupmenu {
+	border-bottom-color: #ccc;
+}
+#loading {
+	background-color: #222;
+}
+#main {
+	background-color: #000;
+}
+.servicelist:hover, .lessonlist:hover, .groupmenu:hover, .button:hover, .grouplist:hover, .list:hover, .groupicon:hover, .checkbox:hover {
+	background-color: rgba(0, 109, 255, .2);
+}
+.editcard:hover, .delcard:hover, .texticon:hover, .popup_button:hover, .clicktextbox:hover, .h4click:hover {
+	background-color: rgba(0, 109, 255, .2);
+}
+.servicelist:active, .lessonlist:active, .groupmenu:active, .button:active, .grouplist:active, .list:active, .groupicon:active, .checkbox:active {
+	background-color: rgba(0, 109, 255, .4);
+}
+.editcard:active, .delcard:active, .texticon:active, .popup_button:active, .clicktextbox:active, .h4click:active {
+	background-color: rgba(0, 109, 255, .4);
+}
+.red {
+	color: #faa;
+	font-weight: bold;
+}
+.redbox {
+	background-color: #fcc;
+}
+.highlight {
+	background-color: #049;
+}
+#managecard tr:nth-child(1), #cardtable tr:nth-child(1) {
+	background-color: #049;
+}
+#center {
+	background-color: #049;
+}
+.msg {
+	background-color: #f33;
+	color: #00;
+}
+#wordlist_left {
+	background-color: #000;
+}
+#random_left {
+	background-color: #049;
+}
+.card {
+	background-color: #049;
+}
+.qatitle {
+	color: #66abff;
+}
+.qa {
+	color: #66abff;
+}
+.insideqa {
+	color: #fff;
+}

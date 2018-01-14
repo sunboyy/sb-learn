@@ -1,0 +1,65 @@
+#wide {
+	width: calc(100% - 50px);
+}
+#wordlist_left {
+	height: calc(100vh - 50px);
+	margin: 0px;
+	overflow: auto;
+}
+#cardlist_left {
+	height: calc(100vh - 50px);
+	margin: 0px;
+	overflow: auto;
+	text-align: center;
+}
+#random_left {
+	margin: 15px 45px 15px 45px;
+	height: calc(100vh - 80px);
+}
+.popup_button {
+	display: inline-block;
+}
+.card {
+	padding: 0px;
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-bottom: 10px;
+	width: 160px;
+	display: inline-block;
+	box-shadow: 1px 2px 3px rgba(0, 0, 0, .5);
+	text-align: left;
+}
+.qatitle {
+	font-size: 14px;
+	padding: 3px 3px 0px 3px;
+}
+.qbox {
+	height: 60px;
+	margin: 0px 3px 3px 3px;
+	padding: 0px;
+	font-size: 16px;
+}
+.abox {
+	height: 60px;
+	margin: 0px 3px 3px 3px;
+	padding: 2px;
+	font-size: 14px;
+}
+.abox:hover {
+	background-color: rgba(0, 0, 0, .3);
+}
+.abox:active {
+	background-color: #000;
+}
+.qa {
+	margin: 0px;
+	padding: 5px;
+	width: 240px;
+	height: 200px;
+	border-radius: 5px;
+}
+.insideqa {
+	margin: 0px;
+	padding: 0px;
+	font-size: 22px;
+}

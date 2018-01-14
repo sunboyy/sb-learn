@@ -1,0 +1,68 @@
+@charset "UTF-8";
+body {
+	background-color: #fff;
+	color: #000;
+}
+/* New */
+.title {
+	color: #006dff;
+}
+.groupmenu {
+	border-bottom-color: #888;
+}
+#loading {
+	background-color: #ddd;
+}
+#main {
+	background-color: #fff;
+}
+.servicelist:hover, .lessonlist:hover, .groupmenu:hover, .button:hover, .grouplist:hover, .list:hover, .groupicon:hover, .checkbox:hover {
+	background-color: rgba(0, 109, 255, .15);
+}
+.editcard:hover, .delcard:hover, .texticon:hover, .popup_button:hover, .clicktextbox:hover, .h4click:hover {
+	background-color: rgba(0, 109, 255, .15);
+}
+.servicelist:active, .lessonlist:active, .groupmenu:active, .button:active, .grouplist:active, .list:active, .groupicon:active, .checkbox:active {
+	background-color: rgba(0, 109, 255, .3);
+}
+.editcard:active, .delcard:active, .texticon:active, .popup_button:active, .clicktextbox:active, .h4click:active {
+	background-color: rgba(0, 109, 255, .3);
+}
+.red {
+	color: #f00;
+	font-weight: bold;
+}
+.redbox {
+	background-color: #fcc;
+}
+.highlight {
+	background-color: #8bf;
+}
+#managecard tr:nth-child(1), #cardtable tr:nth-child(1) {
+	background-color: #8bf;
+}
+#center {
+	background-color: #8bf;
+}
+.msg {
+	background-color: #f33;
+	color: #fff;
+}
+#popup_right {
+	background-color: #ddd;
+}
+#random_left {
+	background-color: #8bf;
+}
+.card {
+	background-color: #8bf;
+}
+.qatitle {
+	color: #0053bf;
+}
+.qa {
+	color: #0053bf;
+}
+.insideqa {
+	color: #000;
+}
