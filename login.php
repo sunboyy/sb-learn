@@ -21,7 +21,7 @@ if ($_POST) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
+<title>Login - <?php echo $title; ?></title>
 <link href="css/main.css" rel="stylesheet" type="text/css" />
 <link href="css/main_dark.css" rel="stylesheet" type="text/css" />
 <link href="css/loggedin.css" rel="stylesheet" type="text/css" />

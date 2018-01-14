@@ -36,11 +36,6 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-$query_group = "SELECT * FROM `group` ORDER BY id ASC";
-$group = mysql_query($query_group, $edu) or die(mysql_error());
-$row_group = mysql_fetch_assoc($group);
-$totalRows_group = mysql_num_rows($group);
-
 $nowgroupid = $_GET['group'];
 $checkgroup = mysql_query("SELECT * FROM `group` WHERE `id` = '$nowgroupid'");
 if (mysql_num_rows($checkgroup) == 1) {
@@ -64,7 +59,7 @@ else {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>มุ่งสู่ห้อง K/Q ม.5 - Recall Card - Group</title>
+<title><?php echo $nowgroup; ?> - Recall Card - <?php echo $title; ?></title>
 <link href="../css/main.css" rel="stylesheet" type="text/css" />
 <link href="../css/main_<?php echo $theme; ?>.css" rel="stylesheet" type="text/css" />
 <link href="../css/loggedin.css" rel="stylesheet" type="text/css" />
@@ -139,6 +134,3 @@ function preload() {
 <script type="text/javascript" src="../js/rc_lesson.js"></script>
 </body>
 </html>
-<?php
-mysql_free_result($group);
-?>

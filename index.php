@@ -9,7 +9,7 @@ $theme = $user['theme'];
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>มุ่งสู่ห้อง K/Q ม.5</title>
+<title>Home - <?php echo $title; ?></title>
 <link href="css/main.css" rel="stylesheet" type="text/css" />
 <link href="css/main_<?php echo $theme; ?>.css" rel="stylesheet" type="text/css" />
 <link href="css/loggedin.css" rel="stylesheet" type="text/css" />

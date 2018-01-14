@@ -9,7 +9,7 @@ $theme = $user['theme'];
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>มุ่งสู่ห้อง K/Q ม.5 - Recall Card - Info</title>
+<title>About - Recall Card - <?php echo $title; ?></title>
 <link href="../css/main.css" rel="stylesheet" type="text/css" />
 <link href="../css/main_<?php echo $theme; ?>.css" rel="stylesheet" type="text/css" />
 <link href="../css/loggedin.css" rel="stylesheet" type="text/css" />
@@ -65,6 +65,10 @@ function preload() {
 		    <td width="50%">
 			  <div id="mainright">
 	      <div class="title">อัพเดตล่าสุด</div>
+				<div class="list">
+				  <h3>14 JAN 2018</h3>
+				  <li>เปลี่ยนชื่อหัวเว็บให้ให้เข้ากับการใช้งานในปัจจุบัน (มุ่งสู่ห้อง K/Q ม.5 -> SB Learn)</li>
+				</div>
 				<div class="list">
 				  <h3>11 JAN 2018</h3>
 				  <li>เพิ่มประสิทธิภาพเล็กน้อย</li>

@@ -74,7 +74,7 @@ else {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Recall card</title>
+<title>Random Card - Recall Card - <?php echo $title; ?></title>
 <link href="../css/main.css" rel="stylesheet" type="text/css" />
 <link href="../css/main_<?php echo $theme; ?>.css" rel="stylesheet" type="text/css" />
 <link href="../css/recallcard_popup.css" rel="stylesheet" type="text/css" />
