@@ -1,7 +1,6 @@
 <?php
-session_start();
-require_once("php/connect.php");
-if (!empty($_SESSION['user'])) {
+require_once("php/main.php");
+if ($user) {
 	header("Location: index.php");
 }
 if ($_POST) {

@@ -1,19 +1,15 @@
 <?php
-session_start();
-if (empty($_SESSION['user'])) {
+require_once("../php/main.php");
+if (!$user) {
 	header("Location: ../login.php");
 }
-require_once("../php/connect.php");
-$usernow = mysql_query("SELECT * FROM `user` WHERE `id` = '{$_SESSION['user']}'");
-$data_usernow = mysql_fetch_array($usernow);
-$theme = $data_usernow['theme'];
+$theme = $user['theme'];
 
 if ($_POST) {
 	$lsnname = htmlspecialchars(trim($_POST['lsnname']));
 	$lsngroup = $_POST['lsngroup'];
-	$user = $_SESSION['user'];
 	if (($lsnname != "") && ($lsngroup != "")) {
-		mysql_query("INSERT INTO `lesson` VALUES ('', '$lsnname', '$lsngroup', '$user', NOW())");
+		mysql_query("INSERT INTO `lesson` VALUES ('', '$lsnname', '$lsngroup', '{$user['id']}', NOW())");
 		$lastid = mysql_insert_id();
 		header("Location: manage.php?lesson=$lastid");
 	}

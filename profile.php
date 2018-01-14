@@ -1,20 +1,16 @@
 <?php
-session_start();
-if (empty($_SESSION['user'])) {
+require_once("php/main.php");
+if (!$user) {
 	header("Location: login.php");
 }
-require_once("php/connect.php");
-$usernow = mysql_query("SELECT * FROM `user` WHERE `id` = '{$_SESSION['user']}'");
-$data_usernow = mysql_fetch_array($usernow);
-$user_id = $_SESSION['user'];
-$theme = $data_usernow['theme'];
+$theme = $user['theme'];
 if ($theme == "light") {
 	$newtheme = "dark";
 }
 else if ($theme == "dark") {
 	$newtheme = "light";
 }
-mysql_query("UPDATE `user` SET `theme` = '$newtheme' WHERE `id` = $user_id;");
+mysql_query("UPDATE `user` SET `theme` = '$newtheme' WHERE `id` = {$user['id']};");
 header("Location: ".$_GET['from']);
 ?>
 <?php require_once('../Connections/edu.php'); ?>

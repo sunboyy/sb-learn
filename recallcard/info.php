@@ -1,12 +1,9 @@
 <?php
-session_start();
-if (empty($_SESSION['user'])) {
+require_once("../php/main.php");
+if (!$user) {
 	header("Location: ../login.php");
 }
-require_once("../php/connect.php");
-$usernow = mysql_query("SELECT * FROM `user` WHERE `id` = '{$_SESSION['user']}'");
-$data_usernow = mysql_fetch_array($usernow);
-$theme = $data_usernow['theme'];
+$theme = $user['theme'];
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

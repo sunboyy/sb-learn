@@ -1,13 +1,9 @@
 <?php
-session_start();
-if (empty($_SESSION['user'])) {
+require_once("../php/main.php");
+if (!$user) {
 	header("Location: ../login.php");
 }
-require_once("../php/connect.php");
-$usernow = mysql_query("SELECT * FROM `user` WHERE `id` = '{$_SESSION['user']}'");
-$data_usernow = mysql_fetch_array($usernow);
-$useridnow = $_SESSION['user'];
-$theme = $data_usernow['theme'];
+$theme = $user['theme'];
 ?>
 <?php
 if (isset($_GET['lesson'])) {
@@ -92,7 +88,7 @@ function preload() {
 			    <div class="title">กลุ่ม: <?php echo $nowgroup; ?></div>
 				<div class="textbox">
                   <h3>แบบฝึกหัด: <?php echo $nowlesson; ?></h3>
-                  <p>จำนวน: <?php echo $num_checkcard; ?> ข้อ<?php if ($useridnow == $data_checklesson['user_id']) { ?> <img src="../images/theme/<?php echo $theme; ?>/text_edit.png" width="20" height="20" class="texticon" id="managethis" lesson="<?php echo $nowlessonid; ?>" /><?php } ?></p>
+                  <p>จำนวน: <?php echo $num_checkcard; ?> ข้อ<?php if ($user['id'] == $data_checklesson['user_id']) { ?> <img src="../images/theme/<?php echo $theme; ?>/text_edit.png" width="20" height="20" class="texticon" id="managethis" lesson="<?php echo $nowlessonid; ?>" /><?php } ?></p>
                   <p>ผู้ดูแล: <?php echo $data_checkowner['name']; ?></p>
 				</div>
 				<div class="groupbutton"><img class="button" src="../images/theme/<?php echo $theme; ?>/rctable.png" width="150" height="150" onclick="window.open('wordlist.php?type=lesson&amp;lesson=<?php echo $_GET['lesson']; ?>','recallcardlesson','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800px,height=500px')" /><img class="button" src="../images/theme/<?php echo $theme; ?>/rccard.png" width="150" height="150" onclick="window.open('cardlist.php?type=lesson&amp;lesson=<?php echo $_GET['lesson']; ?>','recallcardlesson','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800px,height=500px')" /><?php if ($num_checkcard > 1) { ?><img class="button" src="../images/theme/<?php echo $theme; ?>/rcrand.png" width="150" height="150" onclick="window.open('randomcard.php?type=lesson&amp;lesson=<?php echo $_GET['lesson']; ?>','recallcardlesson','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800px,height=500px')" /><?php } ?></div>

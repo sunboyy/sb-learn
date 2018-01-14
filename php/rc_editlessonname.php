@@ -1,12 +1,9 @@
 <?php
 session_start();
-if (empty($_SESSION['user'])) {
+require_once("main.php");
+if (!$user) {
 	header("Location: ../login.php");
 }
-require_once("../php/connect.php");
-$usernow = mysql_query("SELECT * FROM `user` WHERE `id` = '{$_SESSION['user']}'");
-$data_usernow = mysql_fetch_array($usernow);
-$userid = $_SESSION['user'];
 
 if (isset($_POST['lessonid'])) {
 	$id = trim($_POST['lessonid']);
@@ -29,7 +26,7 @@ else {
 $checklesson = mysql_query("SELECT * FROM `lesson` WHERE `id` = '$id'");
 if (mysql_num_rows($checklesson) == 1) {
 	$data_checklesson = mysql_fetch_array($checklesson);
-	if ($userid == $data_checklesson['user_id']) {
+	if ($user['id'] == $data_checklesson['user_id']) {
 		mysql_query("UPDATE `lesson` SET `name` = '$name' WHERE `id` = $id");
 		header("Location: ../recallcard/manage.php?lesson=$id");
 	}

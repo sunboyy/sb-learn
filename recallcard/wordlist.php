@@ -1,14 +1,10 @@
 <?php
-session_start();
-if (empty($_SESSION['user'])) {
+require_once("../php/main.php");
+if (!$user) {
 	header("Location: ../login.php");
 }
-require_once("../php/connect.php");
-$usernow = mysql_query("SELECT * FROM `user` WHERE `id` = '{$_SESSION['user']}'");
-$data_usernow = mysql_fetch_array($usernow);
-$theme = $data_usernow['theme'];
-?>
-<?php
+$theme = $user['theme'];
+
 $type = $_GET['type'];
 if ($type == "lesson") {
 	$lessonid = $_GET['lesson'];

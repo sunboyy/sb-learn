@@ -1,13 +1,9 @@
 <?php
-session_start();
-if (empty($_SESSION['user'])) {
+require_once("../php/main.php");
+if (!$user) {
 	header("Location: ../login.php");
 }
-require_once("../php/connect.php");
-$usernow = mysql_query("SELECT * FROM `user` WHERE `id` = '{$_SESSION['user']}'");
-$data_usernow = mysql_fetch_array($usernow);
-$user_id = $_SESSION['user'];
-$theme = $data_usernow['theme'];
+$theme = $user['theme'];
 
 $checkgroup = mysql_query("SELECT * FROM `group` ORDER BY `id` ASC");
 if (isset($_GET['lesson'])) {
@@ -16,7 +12,7 @@ if (isset($_GET['lesson'])) {
 	
 	$thislesson = mysql_query("SELECT * FROM `lesson` WHERE `id` = '$nowlessonid'");
 	$data_thislesson = mysql_fetch_array($thislesson);
-	if ($data_thislesson['user_id'] != $user_id) {
+	if ($data_thislesson['user_id'] != $user['id']) {
 		header("Location: recallcard_lesson.php?lesson=$nowlessonid");
 	}
 	$groupid = $data_thislesson['group'];
@@ -75,7 +71,7 @@ else {
 			    <div class="title">จัดการแบบฝึกหัด</div>
 				  <?php while ($data_checkgroup = mysql_fetch_array($checkgroup)) {
 					$thisgroupid = $data_checkgroup['id'];
-					$checklesson = mysql_query("SELECT * FROM `lesson` WHERE `group` = '$thisgroupid' AND `user_id` = '$user_id' AND `user_id` = '$user_id' ORDER BY `id` ASC");
+					$checklesson = mysql_query("SELECT * FROM `lesson` WHERE `group` = '$thisgroupid' AND `user_id` = '{$user['id']}' ORDER BY `id` ASC");
 				  ?>
 				  <div class="groupmenu" group="<?php echo $thisgroupid; ?>" page="manage"><?php echo $data_checkgroup['name']; ?></div>
 				  <div class="lessongroup" group="<?php echo $thisgroupid; ?>" <?php if (($onlesson) && ($nowgroupid == $thisgroupid)) { ?>style="display: block;"<?php } ?>>
