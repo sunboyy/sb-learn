@@ -4,8 +4,8 @@ if ($user) {
 	header("Location: index.php");
 }
 if ($_POST) {
-	$code = $_POST['pwd'];
-	$user = $conn->query("SELECT * FROM `user` WHERE `pwd` = '$code'");
+	$qry_user = sprintf("SELECT * FROM `user` WHERE `pwd` = '%s'", $conn->real_escape_string($_POST['pwd']));
+	$user = $conn->query($qry_user);
 	if ($user->num_rows == 1) {
 		$data_user = $user->fetch_array();
 		$_SESSION['user'] = $data_user['id'];
