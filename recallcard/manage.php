@@ -5,24 +5,24 @@ if (!$user) {
 }
 $theme = $user['theme'];
 
-$checkgroup = mysql_query("SELECT * FROM `group` ORDER BY `id` ASC");
+$checkgroup = $conn->query("SELECT * FROM `group` ORDER BY `id` ASC");
 if (isset($_GET['lesson'])) {
 	$nowlessonid = $_GET['lesson'];
 	$onlesson = true;
 	
-	$thislesson = mysql_query("SELECT * FROM `lesson` WHERE `id` = '$nowlessonid'");
-	$data_thislesson = mysql_fetch_array($thislesson);
+	$thislesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$nowlessonid'");
+	$data_thislesson = $thislesson->fetch_array();
 	if ($data_thislesson['user_id'] != $user['id']) {
 		header("Location: recallcard_lesson.php?lesson=$nowlessonid");
 	}
 	$groupid = $data_thislesson['group'];
-	$numrows_thislesson = mysql_num_rows($thislesson);
-	$thisgroup = mysql_query("SELECT * FROM `group` WHERE `id` = '$groupid'");
-	$data_thisgroup = mysql_fetch_array($thisgroup);
+	$numrows_thislesson = $thislesson->num_rows;
+	$thisgroup = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
+	$data_thisgroup = $thisgroup->fetch_array();
 	$nowgroupid = $data_thisgroup['id'];
 	
-	$card = mysql_query("SELECT * FROM `card` WHERE `lesson` = '$nowlessonid' ORDER BY `id` DESC");
-	$numrows_card = mysql_num_rows($card);
+	$card = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$nowlessonid' ORDER BY `id` DESC");
+	$numrows_card = $card->num_rows;
 }
 else {
 	$onlesson = false;
@@ -69,13 +69,13 @@ else {
 		    <td width="50%">
 			  <div id="mainleft">
 			    <div class="title">จัดการแบบฝึกหัด</div>
-				  <?php while ($data_checkgroup = mysql_fetch_array($checkgroup)) {
+				  <?php while ($data_checkgroup = $checkgroup->fetch_array()) {
 					$thisgroupid = $data_checkgroup['id'];
-					$checklesson = mysql_query("SELECT * FROM `lesson` WHERE `group` = '$thisgroupid' AND `user_id` = '{$user['id']}' ORDER BY `id` ASC");
+					$checklesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$thisgroupid' AND `user_id` = '{$user['id']}' ORDER BY `id` ASC");
 				  ?>
 				  <div class="groupmenu" group="<?php echo $thisgroupid; ?>" page="manage"><?php echo $data_checkgroup['name']; ?></div>
 				  <div class="lessongroup" group="<?php echo $thisgroupid; ?>" <?php if (($onlesson) && ($nowgroupid == $thisgroupid)) { ?>style="display: block;"<?php } ?>>
-				    <?php while ($data_checklesson = mysql_fetch_array($checklesson)) {?>
+				    <?php while ($data_checklesson = $checklesson->fetch_array()) {?>
 				    <div class="lessonlist<?php if (($onlesson) && ($nowlessonid == $data_checklesson['id'])) { echo " highlight"; } ?>" lesson="<?php echo $data_checklesson['id']; ?>"><?php echo $data_checklesson['name']; ?></div>
 				    <?php } ?>
 				  </div>
@@ -118,7 +118,7 @@ else {
 				    <td>ความหมาย</td>
 				    <td width="50">จัดการ</td>
 				  </tr>
-				  <?php while ($data_card = mysql_fetch_array($card)) { ?>
+				  <?php while ($data_card = $card->fetch_array()) { ?>
 				  <tr>
 				    <td width="50" align="left" valign="middle"><?php echo $data_card['id']; ?></td>
 				    <td align="left" valign="middle"><?php echo $data_card['primary']; ?></td>

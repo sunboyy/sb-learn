@@ -4,36 +4,34 @@ if (!$user) {
 	header("Location: ../login.php");
 }
 $theme = $user['theme'];
-?>
-<?php
+
 $type = $_GET['type'];
 if ($type == "lesson") {
 	$lessonid = $_GET['lesson'];
-	$card = mysql_query("SELECT * FROM `card` WHERE `lesson` = '$lessonid'");
-	$totalcard = mysql_num_rows($card);
-	$lessonlist = array($lessonid);
-	$lesson = mysql_query("SELECT * FROM `lesson` WHERE `id` = '$lessonid'");
-	$data_lesson = mysql_fetch_array($lesson);
-	$group = mysql_query("SELECT * FROM `group` WHERE `id` = '{$data_lesson['group']}'");
-	$data_group = mysql_fetch_array($group);
+	$card = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$lessonid'");
+	$totalcard = $card->num_rows;
+	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$lessonid'");
+	$data_lesson = $lesson->fetch_array();
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '{$data_lesson['group']}'");
+	$data_group = $group->fetch_array();
 	$groupid = $data_group['id'];
 	$id = $lessonid;
 }
 else if ($type == "group") {
 	$groupid = $_GET['group'];
-	$group = mysql_query("SELECT * FROM `group` WHERE `id` = '$groupid'");
-	$data_group = mysql_fetch_array($group);
-	$lesson = mysql_query("SELECT * FROM `lesson` WHERE `group` = '$groupid'");
-	$num_lesson = mysql_num_rows($lesson);
-	$card = mysql_query("SELECT * FROM `card` WHERE `group` = '$groupid' ORDER BY `primary` ASC");
-	$totalcard = mysql_num_rows($card);
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
+	$data_group = $group->fetch_array();
+	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$groupid'");
+	$num_lesson = $lesson->num_rows;
+	$card = $conn->query("SELECT * FROM `card` WHERE `group` = '$groupid' ORDER BY `primary` ASC");
+	$totalcard = $card->num_rows;
 	$id = $groupid;
 }
 else if ($type == "selected") {
 	$groupid = $_GET['group'];
 	$selected = $_GET['selected'];
-	$group = mysql_query("SELECT * FROM `group` WHERE `id` = '$groupid'");
-	$data_group = mysql_fetch_array($group);
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
+	$data_group = $group->fetch_array();
 	$cardlist = explode("A", $selected);
 	$totalcard = count($cardlist);
 	$id = $groupid;
@@ -96,8 +94,8 @@ p {
 		  <?php
 		  if ($type == "selected") {
 			foreach ($cardlist as $v) {
-				$thiscard = mysql_query("SELECT * FROM `card` WHERE `id` = '$v'");
-				$data_thiscard = mysql_fetch_array($thiscard); ?><div class="card">
+				$thiscard = $conn->query("SELECT * FROM `card` WHERE `id` = '$v'");
+				$data_thiscard = $thiscard->fetch_array(); ?><div class="card">
 			<table width="160" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
 				<td><div class="qatitle">คำถาม:</div><div class="qbox"><?php echo $data_thiscard['primary']; ?></div></td>
@@ -111,7 +109,7 @@ p {
 			}
 		  }
 		  if ($type == "group") {
-			while ($data_thiscard = mysql_fetch_array($card)) { ?><div class="card">
+			while ($data_thiscard = $card->fetch_array()) { ?><div class="card">
 			<table width="160" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
 				<td><div class="qatitle">คำถาม:</div><div class="qbox"><?php echo $data_thiscard['primary']; ?></div></td>
@@ -125,9 +123,8 @@ p {
 			}
 		  }
 		  else {
-		  foreach ($lessonlist as $v) {
-			  $thislesson = mysql_query("SELECT * FROM `card` WHERE `lesson` = '$v' ORDER BY `primary` ASC");
-			  while ($data_thislesson = mysql_fetch_array($thislesson)) { ?><div class="card">
+			  $thislesson = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$lessonid' ORDER BY `primary` ASC");
+			  while ($data_thislesson = $thislesson->fetch_array()) { ?><div class="card">
 			<table width="160" border="0" cellspacing="0" cellpadding="0">
 			  <tr>
 				<td><div class="qatitle">คำถาม:</div><div class="qbox"><?php echo $data_thislesson['primary']; ?></div></td>
@@ -137,7 +134,6 @@ p {
 			  </tr>
 			</table>
 		  </div><?php
-			  }
 		  }
 		  }
 		  ?>

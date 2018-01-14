@@ -5,10 +5,10 @@ if (!$user) {
 }
 $theme = $user['theme'];
 
-$group = mysql_query("SELECT * FROM `group` ORDER BY id ASC");
-$totalRows_group = mysql_num_rows($group);
+$group = $conn->query("SELECT * FROM `group` ORDER BY id ASC");
+$totalRows_group = $group->num_rows;
 
-$latest = mysql_query("SELECT * FROM `lesson` ORDER BY `time_created` DESC LIMIT 0, 3");
+$latest = $conn->query("SELECT * FROM `lesson` ORDER BY `time_created` DESC LIMIT 0, 3");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -51,13 +51,13 @@ $latest = mysql_query("SELECT * FROM `lesson` ORDER BY `time_created` DESC LIMIT
 		    <td width="200">
 			  <div id="mainleft">
 			    <div class="title">แบบฝึกหัดล่าสุด</div>
-			    <?php while ($data_latest = mysql_fetch_array($latest)) {
+			    <?php while ($data_latest = $latest->fetch_array()) {
 					$thisuserid = $data_latest['user_id'];
 					$thislessonid = $data_latest['id'];
-					$checkuser = mysql_query("SELECT * FROM `user` WHERE `id` = '$thisuserid'");
-					$data_checkuser = mysql_fetch_array($checkuser);
-					$checkcard = mysql_query("SELECT * FROM `card` WHERE `lesson` = '$thislessonid'");
-					$num_checkcard = mysql_num_rows($checkcard);
+					$checkuser = $conn->query("SELECT * FROM `user` WHERE `id` = '$thisuserid'");
+					$data_checkuser = $checkuser->fetch_array();
+					$checkcard = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$thislessonid'");
+					$num_checkcard = $checkcard->num_rows;
 				?>
 				<div class="clicktextbox latest" lesson="<?php echo $data_latest['id']; ?>">
 				  <h3><?php echo $data_latest['name']; ?></h3>
@@ -69,10 +69,10 @@ $latest = mysql_query("SELECT * FROM `lesson` ORDER BY `time_created` DESC LIMIT
 			</td>
 			<td>
 			  <div id="mainright">
-				<?php while ($data_group = mysql_fetch_array($group)) {
-				mysql_select_db("sunwsnet_edu");
-				$lesson = mysql_query("SELECT * FROM `lesson` WHERE `group` = '{$data_group['id']}' ORDER BY `id` ASC");
-				$num_lesson = mysql_num_rows($lesson); ?><div class="groupicon" group="<?php echo $data_group['id']; ?>">
+				<?php while ($data_group = $group->fetch_array()) {
+				// mysql_select_db("sunwsnet_edu");
+				$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '{$data_group['id']}' ORDER BY `id` ASC");
+				$num_lesson = $lesson->num_rows; ?><div class="groupicon" group="<?php echo $data_group['id']; ?>">
 				<div class="image"><img src="../images/theme/<?php echo $theme; ?>/groupicon.png" width="200" height="176" /></div>
 				  <table border="0" cellspacing="0" cellpadding="0" width="200">
 				    <tr>

@@ -5,51 +5,20 @@ if (!$user) {
 }
 $theme = $user['theme'];
 
-if (!function_exists("GetSQLValueString")) {
-function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
-{
-  if (PHP_VERSION < 6) {
-    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
-  }
-
-  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
-
-  switch ($theType) {
-    case "text":
-      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-      break;    
-    case "long":
-    case "int":
-      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
-      break;
-    case "double":
-      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
-      break;
-    case "date":
-      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-      break;
-    case "defined":
-      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
-      break;
-  }
-  return $theValue;
-}
-}
-
 $nowgroupid = $_GET['group'];
-$checkgroup = mysql_query("SELECT * FROM `group` WHERE `id` = '$nowgroupid'");
-if (mysql_num_rows($checkgroup) == 1) {
-	$data_checkgroup = mysql_fetch_array($checkgroup);
+$checkgroup = $conn->query("SELECT * FROM `group` WHERE `id` = '$nowgroupid'");
+if ($checkgroup->num_rows == 1) {
+	$data_checkgroup = $checkgroup->fetch_array();
 	$nowgroup = $data_checkgroup['name'];
-	$checklesson = mysql_query("SELECT * FROM `lesson` WHERE `group` = '$nowgroupid'");
-	$numlesson_thisgroup = mysql_num_rows($checklesson);
+	$checklesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$nowgroupid'");
+	$numlesson_thisgroup = $checklesson->num_rows;
 	$totalcard = 0;
-	while ($data_checklesson = mysql_fetch_array($checklesson)) {
-		$thislesson = mysql_query("SELECT * FROM `card` WHERE `lesson` = '{$data_checklesson['id']}'");
-		$num_thislesson = mysql_num_rows($thislesson);
+	while ($data_checklesson = $checklesson->fetch_array()) {
+		$thislesson = $conn->query("SELECT * FROM `card` WHERE `lesson` = '{$data_checklesson['id']}'");
+		$num_thislesson = $thislesson->num_rows;
 		$totalcard += $num_thislesson;
 	}
-	$lessonlist = mysql_query("SELECT * FROM `lesson` WHERE `group` = '$nowgroupid' ORDER BY `id` ASC");
+	$lessonlist = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$nowgroupid' ORDER BY `id` ASC");
 }
 else {
 	header("Location: recallcard.php");
@@ -102,7 +71,7 @@ function preload() {
 		    <td width="50%">
 			  <div id="mainleft">
 			    <div class="groupmenu highlight" group="<?php echo $nowgroupid; ?>"><?php echo $nowgroup; ?></div>
-				<?php while ($data_lessonlist = mysql_fetch_array($lessonlist)) { ?>
+				<?php while ($data_lessonlist = $lessonlist->fetch_array()) { ?>
 				<div class="lessonlist" lesson="<?php echo $data_lessonlist['id']; ?>" page="lesson"><?php echo $data_lessonlist['name']; ?></div>
 				<?php } ?>
 			  </div>

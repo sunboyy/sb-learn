@@ -31,14 +31,14 @@ if (isset($_POST['edit_sec'])) {
 else {
 	header("Location: ../recallcard/manage.php");
 }
-$checkcard = mysql_query("SELECT * FROM `card` WHERE `id` = '$id'");
-if (mysql_num_rows($checkcard) == 1) {
-	$data_checkcard = mysql_fetch_array($checkcard);
+$checkcard = $conn->query("SELECT * FROM `card` WHERE `id` = '$id'");
+if ($checkcard->num_rows == 1) {
+	$data_checkcard = $checkcard->fetch_array();
 	$lessonid = $data_checkcard['lesson'];
-	$checklesson = mysql_query("SELECT * FROM `lesson` WHERE `id` = '$lessonid'");
-	$data_checklesson = mysql_fetch_array($checklesson);
+	$checklesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$lessonid'");
+	$data_checklesson = $checklesson->fetch_array();
 	if ($user['id'] == $data_checklesson['user_id']) {
-		mysql_query("UPDATE `card` SET `primary` = '$pri', `secondary` = '$sec' WHERE `id` = $id");
+		$conn->query("UPDATE `card` SET `primary` = '$pri', `secondary` = '$sec' WHERE `id` = $id");
 		header("Location: ../recallcard/manage.php?lesson=$lessonid");
 	}
 }

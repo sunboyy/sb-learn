@@ -5,9 +5,9 @@ if ($user) {
 }
 if ($_POST) {
 	$code = $_POST['pwd'];
-	$user = mysql_query("SELECT * FROM `user` WHERE `pwd` = '$code'");
-	if (mysql_num_rows($user) == 1) {
-		$data_user = mysql_fetch_array($user);
+	$user = $conn->query("SELECT * FROM `user` WHERE `pwd` = '$code'");
+	if ($user->num_rows == 1) {
+		$data_user = $user->fetch_array();
 		$_SESSION['user'] = $data_user['id'];
 		header("Location: index.php");
 	}

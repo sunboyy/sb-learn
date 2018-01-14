@@ -9,14 +9,13 @@ if ($_POST) {
 	$lsnname = htmlspecialchars(trim($_POST['lsnname']));
 	$lsngroup = $_POST['lsngroup'];
 	if (($lsnname != "") && ($lsngroup != "")) {
-		mysql_query("INSERT INTO `lesson` VALUES ('', '$lsnname', '$lsngroup', '{$user['id']}', NOW())");
-		$lastid = mysql_insert_id();
+		$conn->query("INSERT INTO `lesson` VALUES ('', '$lsnname', '$lsngroup', '{$user['id']}', NOW())");
+		$lastid = $conn->insert_id;
 		header("Location: manage.php?lesson=$lastid");
 	}
 }
 
-mysql_select_db($database_edu, $edu);
-$group = mysql_query("SELECT * FROM `group` ORDER BY id ASC") or die(mysql_error());
+$group = $conn->query("SELECT * FROM `group` ORDER BY id ASC");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -82,7 +81,7 @@ $group = mysql_query("SELECT * FROM `group` ORDER BY id ASC") or die(mysql_error
 			</td>
 		    <td width="50%">
 	          <div id="mainright">
-			    <?php while ($data_group = mysql_fetch_array($group)) { ?>
+			    <?php while ($data_group = $group->fetch_array()) { ?>
 			    <div class="grouplist" groupid="<?php echo $data_group['id']; ?>"><?php echo $data_group['name']; ?></div>
 				<?php } ?>
 		      </div>

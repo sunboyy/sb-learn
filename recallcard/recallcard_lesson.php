@@ -7,20 +7,20 @@ $theme = $user['theme'];
 
 if (isset($_GET['lesson'])) {
 	$nowlessonid = $_GET['lesson'];
-	$checklesson = mysql_query("SELECT * FROM `lesson` WHERE `id` = '$nowlessonid'");
-	if (mysql_num_rows($checklesson) == 1) {
+	$checklesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$nowlessonid'");
+	if ($checklesson->num_rows == 1) {
 		$onlesson = true;
-		$data_checklesson = mysql_fetch_array($checklesson);
+		$data_checklesson = $checklesson->fetch_array();
 		$nowlesson = $data_checklesson['name'];
 		$nowgroupid = $data_checklesson['group'];
-		$checkgroup = mysql_query("SELECT * FROM `group` WHERE `id` = '$nowgroupid'");
-		$data_checkgroup = mysql_fetch_array($checkgroup);
+		$checkgroup = $conn->query("SELECT * FROM `group` WHERE `id` = '$nowgroupid'");
+		$data_checkgroup = $checkgroup->fetch_array();
 		$nowgroup = $data_checkgroup['name'];
-		$checkcard = mysql_query("SELECT * FROM `card` WHERE `lesson` = '{$data_checklesson['id']}'");
-		$num_checkcard = mysql_num_rows($checkcard);
-		$checkowner = mysql_query("SELECT * FROM `user` WHERE `id` = '{$data_checklesson['user_id']}'");
-		$data_checkowner = mysql_fetch_array($checkowner);
-		$lessoningroup = mysql_query("SELECT * FROM `lesson` WHERE `group` = '".$data_checkgroup['id']."' ORDER BY `id` ASC");
+		$checkcard = $conn->query("SELECT * FROM `card` WHERE `lesson` = '{$data_checklesson['id']}'");
+		$num_checkcard = $checkcard->num_rows;
+		$checkowner = $conn->query("SELECT * FROM `user` WHERE `id` = '{$data_checklesson['user_id']}'");
+		$data_checkowner = $checkowner->fetch_array();
+		$lessoningroup = $conn->query("SELECT * FROM `lesson` WHERE `group` = '".$data_checkgroup['id']."' ORDER BY `id` ASC");
 	}
 	else {
 		header("Location: recallcard.php");
@@ -77,7 +77,7 @@ function preload() {
 		    <td width="50%">
 			  <div id="mainleft">
 			    <div class="groupmenu" group="<?php echo $data_checkgroup['id']; ?>"><?php echo $data_checkgroup['name']; ?></div>
-				<?php while ($data_lessoningroup = mysql_fetch_array($lessoningroup)) { ?>
+				<?php while ($data_lessoningroup = $lessoningroup->fetch_array()) { ?>
 				<div class="lessonlist<?php if ($nowlessonid == $data_lessoningroup['id']) { echo " highlight"; } ?>" lesson="<?php echo $data_lessoningroup['id']; ?>" page="lesson"><?php echo $data_lessoningroup['name']; ?></div>
 				<?php } ?>
 			  </div>

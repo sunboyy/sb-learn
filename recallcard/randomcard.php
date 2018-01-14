@@ -10,13 +10,13 @@ $type = $_GET['type'];
 if ($type == "lesson") {
 	$close = false;
 	$lessonid = $_GET['lesson'];
-	$lesson = mysql_query("SELECT * FROM `lesson` WHERE `id` = '$lessonid'");
-	$data_lesson = mysql_fetch_array($lesson);
-	$group = mysql_query("SELECT * FROM `group` WHERE `id` = '{$data_lesson['group']}'");
-	$data_group = mysql_fetch_array($group);
-	$card = mysql_query("SELECT * FROM `card` WHERE `lesson` = '$lessonid'");
+	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$lessonid'");
+	$data_lesson = $lesson->fetch_array();
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '{$data_lesson['group']}'");
+	$data_group = $group->fetch_array();
+	$card = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$lessonid'");
 	$carddata = array();
-	while ($data_card = mysql_fetch_array($card)) {
+	while ($data_card = $card->fetch_array()) {
 		array_push($carddata, [
 			"id" => $data_card['id'],
 			"primary" => $data_card['primary'],
@@ -28,14 +28,14 @@ if ($type == "lesson") {
 else if ($type == "group") {
 	$close = false;
 	$groupid = $_GET['group'];
-	$group = mysql_query("SELECT * FROM `group` WHERE `id` = '$groupid'");
-	$data_group = mysql_fetch_array($group);
-	$lesson = mysql_query("SELECT * FROM `lesson` WHERE `group` = '$groupid'");
-	$num_lesson = mysql_num_rows($lesson);
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
+	$data_group = $group->fetch_array();
+	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$groupid'");
+	$num_lesson = $lesson->num_rows;
 	$carddata = array();
-	while ($data_lesson = mysql_fetch_array($lesson)) {
-		$card = mysql_query("SELECT * FROM `card` WHERE `lesson` = '{$data_lesson['id']}'");
-		while ($data_card = mysql_fetch_array($card)) {
+	while ($data_lesson = $lesson->fetch_array()) {
+		$card = $conn->query("SELECT * FROM `card` WHERE `lesson` = '{$data_lesson['id']}'");
+		while ($data_card = $card->fetch_array()) {
 			array_push($carddata, [
 				"id" => $data_card['id'],
 				"primary" => $data_card['primary'],
@@ -49,13 +49,13 @@ else if ($type = "selected") {
 	$close = false;
 	$groupid = $_GET['group'];
 	$selected = $_GET['selected'];
-	$group = mysql_query("SELECT * FROM `group` WHERE `id` = '$groupid'");
-	$data_group = mysql_fetch_array($group);
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
+	$data_group = $group->fetch_array();
 	$cardlist = explode("A", $selected);
 	$carddata = array();
 	foreach ($cardlist as $v) {
-		$card = mysql_query("SELECT * FROM `card` WHERE `id` = '$v'");
-		while ($data_card = mysql_fetch_array($card)) {
+		$card = $conn->query("SELECT * FROM `card` WHERE `id` = '$v'");
+		while ($data_card = $card->fetch_array()) {
 			array_push($carddata, [
 				"id" => $data_card['id'],
 				"primary" => $data_card['primary'],

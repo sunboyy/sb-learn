@@ -3,11 +3,11 @@ require_once("connect.php");
 session_start();
 $user = null;
 function check_user() {
+    global $conn, $user;
     if (empty($_SESSION['user'])) return;
-    $usernow = mysql_query("SELECT * FROM `user` WHERE `id` = '{$_SESSION['user']}'");
-    if (mysql_num_rows($usernow) != 1) return;
-    $data_usernow = mysql_fetch_array($usernow);
-    global $user;
+    $usernow = $conn->query("SELECT * FROM `user` WHERE `id` = '{$_SESSION['user']}'");
+    if ($usernow->num_rows != 1) return;
+    $data_usernow = $usernow->fetch_array();
     $user = $data_usernow;
 }
 check_user();
