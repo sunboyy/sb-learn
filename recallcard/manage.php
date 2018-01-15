@@ -1,11 +1,11 @@
 <?php
 require_once("../php/main.php");
+require_once("core.php");
 if (!$user) {
 	header("Location: ../login.php");
 }
 $theme = $user['theme'];
 
-$checkgroup = $conn->query("SELECT * FROM `group` ORDER BY `id` ASC");
 if (isset($_GET['lesson'])) {
 	$nowlessonid = $_GET['lesson'];
 	$onlesson = true;
@@ -69,11 +69,11 @@ else {
 		    <td width="50%">
 			  <div id="mainleft">
 			    <div class="title">จัดการแบบฝึกหัด</div>
-				  <?php while ($data_checkgroup = $checkgroup->fetch_array()) {
-					$thisgroupid = $data_checkgroup['id'];
+				  <?php foreach (get_groups() as $group) {
+					$thisgroupid = $group['id'];
 					$checklesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$thisgroupid' AND `user_id` = '{$user['id']}' ORDER BY `id` ASC");
 				  ?>
-				  <div class="groupmenu" group="<?php echo $thisgroupid; ?>" page="manage"><?php echo $data_checkgroup['name']; ?></div>
+				  <div class="groupmenu" group="<?php echo $thisgroupid; ?>" page="manage"><?php echo $group['name']; ?></div>
 				  <div class="lessongroup" group="<?php echo $thisgroupid; ?>" <?php if (($onlesson) && ($nowgroupid == $thisgroupid)) { ?>style="display: block;"<?php } ?>>
 				    <?php while ($data_checklesson = $checklesson->fetch_array()) {?>
 				    <div class="lessonlist<?php if (($onlesson) && ($nowlessonid == $data_checklesson['id'])) { echo " highlight"; } ?>" lesson="<?php echo $data_checklesson['id']; ?>"><?php echo $data_checklesson['name']; ?></div>

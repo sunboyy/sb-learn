@@ -1,12 +1,12 @@
 <?php
 require_once("../php/main.php");
+require_once("core.php");
 if (!$user) {
 	header("Location: ../login.php");
 }
 $theme = $user['theme'];
 
 $group = $conn->query("SELECT * FROM `group` ORDER BY id ASC");
-$totalRows_group = $group->num_rows;
 
 $latest = $conn->query("SELECT * FROM `lesson` ORDER BY `time_created` DESC LIMIT 0, 3");
 ?>
@@ -69,8 +69,7 @@ $latest = $conn->query("SELECT * FROM `lesson` ORDER BY `time_created` DESC LIMI
 			</td>
 			<td>
 			  <div id="mainright">
-				<?php while ($data_group = $group->fetch_array()) {
-				// mysql_select_db("sunwsnet_edu");
+				<?php foreach (get_groups() as $data_group) {
 				$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '{$data_group['id']}' ORDER BY `id` ASC");
 				$num_lesson = $lesson->num_rows; ?><div class="groupicon" group="<?php echo $data_group['id']; ?>">
 				<div class="image"><img src="../images/theme/<?php echo $theme; ?>/groupicon.png" width="200" height="176" /></div>
