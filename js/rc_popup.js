@@ -1,20 +1,54 @@
 var currenthome = 'http://localhost/edu/';
+function getAllUrlParams(url) {
+	var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+	var obj = {};
+	if (queryString) {
+		queryString = queryString.split('#')[0];
+		var arr = queryString.split('&');
+		for (var i = 0; i < arr.length; i++) {
+			var a = arr[i].split('=');
+			var paramNum = undefined;
+			var paramName = a[0].replace(/\[\d*\]/, function (v) {
+				paramNum = v.slice(1, -1);
+				return '';
+			});
+			var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+			paramName = paramName.toLowerCase();
+			paramValue = paramValue.toLowerCase();
+			if (obj[paramName]) {
+				if (typeof obj[paramName] === 'string') {
+					obj[paramName] = [obj[paramName]];
+				}
+				if (typeof paramNum === 'undefined') {
+					obj[paramName].push(paramValue);
+				}
+				else {
+					obj[paramName][paramNum] = paramValue;
+				}
+			}
+			else {
+				obj[paramName] = paramValue;
+			}
+		}
+	}
+	return obj;
+}
 function resize() {
 	var width = $(window).width(), height = $(window).height();
-	$('#sidebar').css('height', height-50);
-	$('#popup_right').css('height', height-50);
+	$('#sidebar').css('height', height - 50);
+	$('#popup_right').css('height', height - 50);
 }
-$(document).ready(function() {
+$(document).ready(function () {
 	resize();
 });
-$(window).resize(function() {
+$(window).resize(function () {
 	resize();
 });
-$(window).load(function() {
+$(window).load(function () {
 	$('#loading').hide('fast');
 	$('#all').fadeIn('fast');
 });
-$('#menu').click(function() {
+$('#menu').click(function () {
 	if ($('#hidsidebar').css('display') == 'none') {
 		$('#hidsidebar').fadeIn('fast');
 	}
@@ -22,60 +56,54 @@ $('#menu').click(function() {
 		$('#hidsidebar').fadeOut('fast');
 	}
 });
-$('.close').click(function() {
+$('.close').click(function () {
 	if (confirm('คุณต้องการปิดหน้าต่างหรือไม่?')) {
 		window.close();
 	}
 });
-$('#main').click(function() {
+$('#main').click(function () {
 	if ($('#hidsidebar').css('display') == 'block') {
 		$('#hidsidebar').fadeOut('fast');
 	}
 });
-$('#buttonhide').click(function() {
+$('#buttonhide').click(function () {
 	$('.seccol').hide();
 	$('#buttonshow').removeClass('highlight');
 	$('#buttonhide').addClass('highlight');
 });
-$('#buttonshow').click(function() {
+$('#buttonshow').click(function () {
 	$('.seccol').show();
 	$('#buttonshow').addClass('highlight');
 	$('#buttonhide').removeClass('highlight');
 });
-$('.table').click(function() {
-	if (thislist == 'lesson') {
-		window.open('wordlist.php?type=lesson&lesson='+listid, '_self');
+$('.table').click(function () {
+	var params = getAllUrlParams();
+	if (params.type == 'lesson' || params.type == 'group') {
+		window.open('wordlist.php?type=' + params.type + '&id=' + params.id, '_self');
 	}
-	else if (thislist == 'group') {
-		window.open('wordlist.php?type=group&group='+listid, '_self');
-	}
-	else if (thislist == 'selected') {
-		window.open('wordlist.php?type=selected&group='+listid+'&selected='+selectedcode, '_self');
+	else if (params.type == 'selected') {
+		window.open('wordlist.php?type=selected&id=' + params.id + '&selected=' + selectedcode, '_self');
 	}
 });
-$('.cards').click(function() {
-	if (thislist == 'lesson') {
-		window.open('cardlist.php?type=lesson&lesson='+listid, '_self');
+$('.cards').click(function () {
+	var params = getAllUrlParams();
+	if (params.type == 'lesson' || params.type == 'group') {
+		window.open('cardlist.php?type=' + params.type + '&id=' + params.id, '_self');
 	}
-	else if (thislist == 'group') {
-		window.open('cardlist.php?type=group&group='+listid, '_self');
-	}
-	else if (thislist == 'selected') {
-		window.open('cardlist.php?type=selected&group='+listid+'&selected='+selectedcode, '_self');
+	else if (params.type == 'selected') {
+		window.open('cardlist.php?type=selected&id=' + params.id + '&selected=' + selectedcode, '_self');
 	}
 });
-$('.random').click(function() {
-	if (thislist == 'lesson') {
-		window.open('randomcard.php?type=lesson&lesson='+listid, '_self');
+$('.random').click(function () {
+	var params = getAllUrlParams();
+	if (params.type == 'lesson' || params.type == 'group') {
+		window.open('randomcard.php?type=' + params.type + '&id=' + params.id, '_self');
 	}
-	else if (thislist == 'group') {
-		window.open('randomcard.php?type=group&group='+listid, '_self');
-	}
-	else if (thislist == 'selected') {
-		window.open('randomcard.php?type=selected&group='+listid+'&selected='+selectedcode, '_self');
+	else if (params.type == 'selected') {
+		window.open('randomcard.php?type=selected&id=' + params.id + '&selected=' + selectedcode, '_self');
 	}
 });
-$('.abox').click(function() {
+$('.abox').click(function () {
 	if ($(this).attr('show') == "true") {
 		$(this).attr('show', 'false');
 		numopen--;
@@ -97,7 +125,7 @@ $('.abox').click(function() {
 		$('#btnGoSelect').attr('disabled', 'disabled');
 	}
 });
-$('#ahideall').click(function() {
+$('#ahideall').click(function () {
 	$('.abox').attr('show', 'true');
 	$('.abox').addClass('dark');
 	numopen = totalcard;
@@ -107,18 +135,18 @@ $('#ahideall').click(function() {
 		$('#btnGoSelect').removeAttr('disabled');
 	}
 });
-$('#ashowall').click(function() {
+$('#ashowall').click(function () {
 	$('.abox').attr('show', 'false');
 	$('.abox').removeClass('dark');
 	numopen = 0;
 	$('#numopening').text(numopen);
-	$('.abox').each(function() {
+	$('.abox').each(function () {
 		var sec = $(this).attr('sec');
 		$(this).html(sec);
 	});
 	$('#btnGoSelect').attr('disabled', 'disabled');
 });
-$(document).keypress(function(e) {
+$(document).keypress(function (e) {
 	key = e.which;
 	if ($('#continuous').css('display') == 'block') {
 		if ((key == 113) || (key == 81)) {
@@ -142,13 +170,13 @@ $(document).keypress(function(e) {
 		}
 	}
 });
-$('#random').click(function() {
+$('#random').click(function () {
 	rand();
 });
-$('#answer').click(function() {
+$('#answer').click(function () {
 	ans();
 });
-$('#continuous_title').click(function() {
+$('#continuous_title').click(function () {
 	$('#continuous').show('fast');
 	$('#getpoint').hide('fast');
 	$('#atext').show('fast');
@@ -157,7 +185,7 @@ $('#continuous_title').click(function() {
 	$('#point').val('0');
 	$('#point').removeClass('redbox');
 });
-$('#getpoint_title').click(function() {
+$('#getpoint_title').click(function () {
 	rand();
 	$('#random_left').show('fast');
 	$('#continuous').hide('fast');
@@ -167,10 +195,10 @@ $('#getpoint_title').click(function() {
 	$('#asol').hide('fast');
 	$('#textbox_ans').focus();
 });
-$('#btnChk').click(function() {
+$('#btnChk').click(function () {
 	checkanswer();
 });
-$(document).keypress(function(e) {
+$(document).keypress(function (e) {
 	var key = e.which;
 });
 function checkanswer() {
@@ -191,7 +219,7 @@ function checkanswer() {
 	$('#abox').hide('fast');
 	$('#asol').show('fast');
 }
-$('#btnNext').click(function() {
+$('#btnNext').click(function () {
 	next();
 });
 function next() {
@@ -200,7 +228,7 @@ function next() {
 	rand();
 	$('#textbox_ans').focus();
 }
-$('.checkbox').click(function(e) {
+$('.checkbox').click(function (e) {
 	state = $(this).attr('state');
 	if (state == 'no') {
 		if (e.shiftKey) {
@@ -213,12 +241,12 @@ $('.checkbox').click(function(e) {
 				else {
 					var first = thisclick, last = lastselected;
 				}
-				$('.checkbox').each(function() {
+				$('.checkbox').each(function () {
 					var str3 = $(this).attr('numcardnow');
 					var checknum = pad.substring(0, pad.length - str3.length) + str3;
 					if ((checknum >= first) && (checknum <= last)) {
 						if ($(this).attr('state') == 'no') {
-							$(this).attr('src', '../images/theme/'+theme+'/checked.png');
+							$(this).attr('src', '../images/theme/' + theme + '/checked.png');
 							$(this).attr('state', 'yes');
 							numcheck++;
 						}
@@ -227,22 +255,22 @@ $('.checkbox').click(function(e) {
 			}
 		}
 		else {
-			$(this).attr('src', '../images/theme/'+theme+'/checked.png');
+			$(this).attr('src', '../images/theme/' + theme + '/checked.png');
 			$(this).attr('state', 'yes');
 			numcheck++;
 		}
 		if (numcheck == totalcard) {
-			$('.checkall').attr('src', '../images/theme/'+theme+'/checked.png');
+			$('.checkall').attr('src', '../images/theme/' + theme + '/checked.png');
 			$('.checkall').attr('state', 'yes');
 		}
 		var str = $(this).attr('numcardnow');
 		lastselected = pad.substring(0, pad.length - str.length) + str;
 	}
 	else if (state == 'yes') {
-		$(this).attr('src', '../images/theme/'+theme+'/unchecked.png');
+		$(this).attr('src', '../images/theme/' + theme + '/unchecked.png');
 		$(this).attr('state', 'no');
 		numcheck--;
-		$('.checkall').attr('src', '../images/theme/'+theme+'/unchecked.png');
+		$('.checkall').attr('src', '../images/theme/' + theme + '/unchecked.png');
 		$('.checkall').attr('state', 'no');
 		lastselected = '0000';
 	}
@@ -255,19 +283,19 @@ $('.checkbox').click(function(e) {
 		$('#btnGoSelect').attr('disabled', 'disabled');
 	}
 });
-$('.checkall').click(function() {
+$('.checkall').click(function () {
 	state = $(this).attr('state');
 	if (state == 'no') {
-		$('.checkbox').attr('src', '../images/theme/'+theme+'/checked.png');
+		$('.checkbox').attr('src', '../images/theme/' + theme + '/checked.png');
 		$('.checkbox').attr('state', 'yes');
-		$(this).attr('src', '../images/theme/'+theme+'/checked.png');
+		$(this).attr('src', '../images/theme/' + theme + '/checked.png');
 		$(this).attr('state', 'yes');
 		numcheck = totalcard;
 	}
 	else if (state == 'yes') {
-		$('.checkbox').attr('src', '../images/theme/'+theme+'/unchecked.png');
+		$('.checkbox').attr('src', '../images/theme/' + theme + '/unchecked.png');
 		$('.checkbox').attr('state', 'no');
-		$(this).attr('src', '../images/theme/'+theme+'/unchecked.png');
+		$(this).attr('src', '../images/theme/' + theme + '/unchecked.png');
 		$(this).attr('state', 'no');
 		numcheck = 0;
 	}
@@ -280,25 +308,25 @@ $('.checkall').click(function() {
 		$('#btnGoSelect').attr('disabled', 'disabled');
 	}
 });
-$('#btnGoSelect').click(function() {
+$('#btnGoSelect').click(function () {
 	var cardlist = "";
-	$('.checkbox').each(function() {
+	$('.checkbox').each(function () {
 		if ($(this).attr('state') == 'yes') {
 			if (cardlist == "") {
-				cardlist = cardlist+($(this).attr('cardid'));
+				cardlist = cardlist + ($(this).attr('cardid'));
 			}
 			else {
-				cardlist = cardlist+'A'+($(this).attr('cardid'));
+				cardlist = cardlist + 'A' + ($(this).attr('cardid'));
 			}
 		}
 	});
-	$('.dark').each(function() {
+	$('.dark').each(function () {
 		if (cardlist == "") {
-			cardlist = cardlist+($(this).attr('cardid'));
+			cardlist = cardlist + ($(this).attr('cardid'));
 		}
 		else {
-			cardlist = cardlist+'A'+($(this).attr('cardid'));
+			cardlist = cardlist + 'A' + ($(this).attr('cardid'));
 		}
 	});
-	window.open('wordlist.php?type=selected&group='+groupid+'&selected='+cardlist, '_self');
+	window.open('wordlist.php?type=selected&group=' + groupid + '&selected=' + cardlist, '_self');
 });

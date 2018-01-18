@@ -1,40 +1,43 @@
 <?php
 require_once("../php/main.php");
+require_once("core.php");
 if (!$user) {
 	header("Location: ../login.php");
 }
 $theme = $user['theme'];
 
 $type = $_GET['type'];
+$getid = $_GET['id'];
+if ($type == "lesson" || $type == "group" || $type == "selected") {
+	$close = false;
+	if ($type == "selected") {
+		$carddata = get_cards($type, explode("A", $_GET['selected']));
+	}
+	else {
+		$carddata = get_cards($type, $getid);
+	}
+}
+else {
+	$close = true;
+}
 if ($type == "lesson") {
-	$lessonid = $_GET['lesson'];
-	$card = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$lessonid'");
-	$totalcard = $card->num_rows;
-	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$lessonid'");
+	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$getid'");
 	$data_lesson = $lesson->fetch_array();
 	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '{$data_lesson['group']}'");
 	$data_group = $group->fetch_array();
 	$groupid = $data_group['id'];
-	$id = $lessonid;
 }
 else if ($type == "group") {
-	$groupid = $_GET['group'];
-	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$getid'");
 	$data_group = $group->fetch_array();
-	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$groupid'");
+	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$getid'");
 	$num_lesson = $lesson->num_rows;
-	$card = $conn->query("SELECT * FROM `card` WHERE `group` = '$groupid' ORDER BY `primary` ASC");
-	$totalcard = $card->num_rows;
-	$id = $groupid;
+	$groupid = $_GET['id'];
 }
-else if ($type == "selected") {
-	$groupid = $_GET['group'];
-	$selected = $_GET['selected'];
-	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
+else if ($type = "selected") {
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$getid'");
 	$data_group = $group->fetch_array();
-	$cardlist = explode("A", $selected);
-	$totalcard = count($cardlist);
-	$id = $groupid;
+	$groupid = $_GET['id'];
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -47,11 +50,11 @@ else if ($type == "selected") {
 <link href="../css/recallcard_popup.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript">
-var thislist = '<?php echo $type; ?>', listid = '<?php echo $id; ?>', numopen = <?php echo $totalcard; ?>, groupid = '<?php echo $groupid; ?>', numopen = <?php echo $totalcard; ?>;
-var totalcard = <?php echo $totalcard; ?>;
-if (thislist == 'selected') {
-	var selectedcode = '<?php if ($type == "selected") echo $selected; ?>';
-}
+var numopen = <?php echo count($carddata); ?>, groupid = '<?php echo $groupid; ?>';
+var totalcard = <?php echo count($carddata); ?>;
+<?php if ($type == "selected") { ?>
+var selectedcode = '<?php if ($type == "selected") echo $_GET['selected']; ?>';
+<?php } ?>
 </script>
 <style>
 p {
@@ -91,53 +94,19 @@ p {
 		  <tr>
 		    <td>
 			  <div id="cardlist_left">
-		  <?php
-		  if ($type == "selected") {
-			foreach ($cardlist as $v) {
-				$thiscard = $conn->query("SELECT * FROM `card` WHERE `id` = '$v'");
-				$data_thiscard = $thiscard->fetch_array(); ?><div class="card">
-			<table width="160" border="0" cellspacing="0" cellpadding="0">
-			  <tr>
-				<td><div class="qatitle">คำถาม:</div><div class="qbox"><?php echo $data_thiscard['primary']; ?></div></td>
-			  </tr>
-			  <tr>
-				<td><div class="qatitle">คำตอบ:</div><div class="abox dark" id="a_<?php echo $data_thiscard['id']; ?>" sec="<?php echo $data_thiscard['secondary']; ?>" show="true" cardid="<?php echo $data_thiscard['id']; ?>"></div></td>
-			  </tr>
-			</table>
-		  </div>
-			<?php
-			}
-		  }
-		  if ($type == "group") {
-			while ($data_thiscard = $card->fetch_array()) { ?><div class="card">
-			<table width="160" border="0" cellspacing="0" cellpadding="0">
-			  <tr>
-				<td><div class="qatitle">คำถาม:</div><div class="qbox"><?php echo $data_thiscard['primary']; ?></div></td>
-			  </tr>
-			  <tr>
-				<td><div class="qatitle">คำตอบ:</div><div class="abox dark" id="a_<?php echo $data_thiscard['id']; ?>" sec="<?php echo $data_thiscard['secondary']; ?>" show="true" cardid="<?php echo $data_thiscard['id']; ?>"></div></td>
-			  </tr>
-			</table>
-		  </div>
-			<?php
-			}
-		  }
-		  else {
-			  $thislesson = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$lessonid' ORDER BY `primary` ASC");
-			  while ($data_thislesson = $thislesson->fetch_array()) { ?><div class="card">
-			<table width="160" border="0" cellspacing="0" cellpadding="0">
-			  <tr>
-				<td><div class="qatitle">คำถาม:</div><div class="qbox"><?php echo $data_thislesson['primary']; ?></div></td>
-			  </tr>
-			  <tr>
-				<td><div class="qatitle">คำตอบ:</div><div class="abox dark" id="a_<?php echo $data_thislesson['id']; ?>" sec="<?php echo $data_thislesson['secondary']; ?>" show="true" cardid="<?php echo $data_thislesson['id']; ?>"></div></td>
-			  </tr>
-			</table>
-		  </div><?php
-		  }
-		  }
-		  ?>
-              </div>
+					<?php foreach ($carddata as $v) { ?>
+		  		<div class="card">
+						<table width="160" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+							<td><div class="qatitle">คำถาม:</div><div class="qbox"><?php echo $v['primary']; ?></div></td>
+							</tr>
+							<tr>
+							<td><div class="qatitle">คำตอบ:</div><div class="abox dark" id="a_<?php echo $v['id']; ?>" sec="<?php echo $v['secondary']; ?>" show="true" cardid="<?php echo $v['id']; ?>"></div></td>
+							</tr>
+						</table>
+					</div>
+					<?php } ?>
+        </div>
 			</td>
 			<td width="320">
 			  <div id="popup_right">
@@ -148,8 +117,8 @@ p {
 				  <?php } else if ($type == "group") { ?>
 				  <p>จำนวน: <?php echo $num_lesson; ?> แบบฝึกหัด</p>
 				  <?php } ?>
-				  <p>จำนวน: <?php echo $totalcard; ?> ข้อ</p>
-				  <p>จำนวนป้ายที่ปิดอยู่: <span id="numopening"><?php echo $totalcard; ?></span> ข้อ <input type="button" id="btnGoSelect" value="Go" /></p>
+				  <p>จำนวน: <?php echo count($carddata); ?> ข้อ</p>
+				  <p>จำนวนป้ายที่ปิดอยู่: <span id="numopening"><?php echo count($carddata); ?></span> ข้อ <input type="button" id="btnGoSelect" value="Go" /></p>
 				  <div class="popup_button" id="ahideall"><img src="../images/theme/<?php echo $theme; ?>/rc_hide.png" width="150" height="150" /></div><div class="popup_button" id="ashowall"><img src="../images/theme/<?php echo $theme; ?>/rc_show.png" width="150" height="150" /></div>
 				</div>
 			  </div>

@@ -1,41 +1,43 @@
 <?php
 require_once("../php/main.php");
+require_once("core.php");
 if (!$user) {
 	header("Location: ../login.php");
 }
 $theme = $user['theme'];
 
 $type = $_GET['type'];
+$getid = $_GET['id'];
+if ($type == "lesson" || $type == "group" || $type == "selected") {
+	$close = false;
+	if ($type == "selected") {
+		$carddata = get_cards($type, explode("A", $_GET['selected']));
+	}
+	else {
+		$carddata = get_cards($type, $getid);
+	}
+}
+else {
+	$close = true;
+}
 if ($type == "lesson") {
-	$lessonid = $_GET['lesson'];
-	$card = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$lessonid'");
-	$totalcard = $card->num_rows;
-	$lessonlist = array($lessonid);
-	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$lessonid'");
+	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$getid'");
 	$data_lesson = $lesson->fetch_array();
 	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '{$data_lesson['group']}'");
 	$data_group = $group->fetch_array();
 	$groupid = $data_group['id'];
-	$id = $lessonid;
 }
 else if ($type == "group") {
-	$groupid = $_GET['group'];
-	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$getid'");
 	$data_group = $group->fetch_array();
-	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$groupid'");
+	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$getid'");
 	$num_lesson = $lesson->num_rows;
-	$card = $conn->query("SELECT * FROM `card` WHERE `group` = '$groupid' ORDER BY `primary` ASC");
-	$totalcard = $card->num_rows;
-	$id = $groupid;
+	$groupid = $_GET['id'];
 }
-else if ($type == "selected") {
-	$groupid = $_GET['group'];
-	$selected = $_GET['selected'];
-	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
+else if ($type = "selected") {
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$getid'");
 	$data_group = $group->fetch_array();
-	$cardlist = explode("A", $selected);
-	$totalcard = count($cardlist);
-	$id = $groupid;
+	$groupid = $_GET['id'];
 }
 $numcardnow = 1;
 ?>
@@ -49,10 +51,10 @@ $numcardnow = 1;
 <link href="../css/recallcard_popup.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script type="text/javascript">
-var groupid = '<?php echo $groupid; ?>', thislist = '<?php echo $type; ?>', listid = '<?php echo $id; ?>', theme = '<?php echo $theme; ?>', state, numcheck = 0, totalcard = <?php echo $totalcard; ?>, lastselected = '0000', pad = '0000';
-if (thislist == 'selected') {
-	var selectedcode = '<?php if ($type == "selected") echo $selected; ?>';
-}
+var groupid = '<?php echo $groupid; ?>', theme = '<?php echo $theme; ?>', state, numcheck = 0, totalcard = <?php echo count($carddata); ?>, lastselected = '0000', pad = '0000';
+<?php if ($type == "selected") { ?>
+var selectedcode = '<?php echo $_GET['selected']; ?>';
+<?php } ?>
 </script>
 <style>
 p {
@@ -103,41 +105,14 @@ p {
 			        <td align="center" class="seccol">ความหมาย</td>
 			      </tr>
 			      <?php
-				  if ($type == "selected") {
-					foreach ($cardlist as $v) {
-						$thiscard = $conn->query("SELECT * FROM `card` WHERE `id` = '$v'");
-						$data_thiscard = $thiscard->fetch_array();
-						echo "<tr>";
-						echo "<td><img class=\"checkbox\" state=\"no\" cardid=\"$v\" numcardnow=\"$numcardnow\" src=\"../images/theme/$theme/unchecked.png\" width=\"24\" height=\"24\" /></td>";
-						echo "<td class=\"pricol\">".$data_thiscard['primary']."</td>";
-						echo "<td class=\"seccol\">".$data_thiscard['secondary']."</td>";
-						echo "</tr>";
-						$numcardnow++;
-					}
-				  }
-				  else if ($type == "group") {
-					while ($data_thiscard = $card->fetch_array()) {
-						echo "<tr>";
-						echo "<td><img class=\"checkbox\" state=\"no\" cardid=\"".$data_thiscard['id']."\" numcardnow=\"$numcardnow\" src=\"../images/theme/$theme/unchecked.png\" width=\"24\" height=\"24\" /></td>";
-						echo "<td class=\"pricol\">".$data_thiscard['primary']."</td>";
-						echo "<td class=\"seccol\">".$data_thiscard['secondary']."</td>";
-						echo "</tr>";
-						
-					}
-				  }
-				  else {
-					foreach ($lessonlist as $v) {
-					$thislesson = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$v' ORDER BY `primary` ASC");
-					while ($data_thislesson = $thislesson->fetch_array()) {
-						echo "<tr>";
-						echo "<td><img class=\"checkbox\" state=\"no\" cardid=\"{$data_thislesson['id']}\" numcardnow=\"$numcardnow\" src=\"../images/theme/$theme/unchecked.png\" width=\"24\" height=\"24\" /></td>";
-						echo "<td class=\"pricol\">".$data_thislesson['primary']."</td>";
-						echo "<td class=\"seccol\">".$data_thislesson['secondary']."</td>";
-						echo "</tr>";
-						$numcardnow++;
-					}
-					}
-				  }
+						foreach ($carddata as $v) {
+							echo "<tr>";
+							echo "<td><img class=\"checkbox\" state=\"no\" cardid=\"{$v['id']}\" numcardnow=\"$numcardnow\" src=\"../images/theme/$theme/unchecked.png\" width=\"24\" height=\"24\" /></td>";
+							echo "<td class=\"pricol\">".$v['primary']."</td>";
+							echo "<td class=\"seccol\">".$v['secondary']."</td>";
+							echo "</tr>";
+							$numcardnow++;
+						}
 			      ?>
 		        </table>
               </div>

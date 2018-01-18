@@ -1,72 +1,40 @@
 <?php
 require_once("../php/main.php");
+require_once("core.php");
 if (!$user) {
 	header("Location: ../login.php");
 }
 $theme = $user['theme'];
-?>
-<?php
+
 $type = $_GET['type'];
-if ($type == "lesson") {
+$getid = $_GET['id'];
+if ($type == "lesson" || $type == "group" || $type == "selected") {
 	$close = false;
-	$lessonid = $_GET['lesson'];
-	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$lessonid'");
-	$data_lesson = $lesson->fetch_array();
-	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '{$data_lesson['group']}'");
-	$data_group = $group->fetch_array();
-	$card = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$lessonid'");
-	$carddata = array();
-	while ($data_card = $card->fetch_array()) {
-		array_push($carddata, [
-			"id" => $data_card['id'],
-			"primary" => $data_card['primary'],
-			"secondary" => $data_card['secondary']
-		]);
+	if ($type == "selected") {
+		$carddata = get_cards($type, explode("A", $_GET['selected']));
 	}
-	$getid = $lessonid;
-}
-else if ($type == "group") {
-	$close = false;
-	$groupid = $_GET['group'];
-	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
-	$data_group = $group->fetch_array();
-	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$groupid'");
-	$num_lesson = $lesson->num_rows;
-	$carddata = array();
-	while ($data_lesson = $lesson->fetch_array()) {
-		$card = $conn->query("SELECT * FROM `card` WHERE `lesson` = '{$data_lesson['id']}'");
-		while ($data_card = $card->fetch_array()) {
-			array_push($carddata, [
-				"id" => $data_card['id'],
-				"primary" => $data_card['primary'],
-				"secondary" => $data_card['secondary']
-			]);
-		}
+	else {
+		$carddata = get_cards($type, $getid);
 	}
-	$getid = $groupid;
-}
-else if ($type = "selected") {
-	$close = false;
-	$groupid = $_GET['group'];
-	$selected = $_GET['selected'];
-	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
-	$data_group = $group->fetch_array();
-	$cardlist = explode("A", $selected);
-	$carddata = array();
-	foreach ($cardlist as $v) {
-		$card = $conn->query("SELECT * FROM `card` WHERE `id` = '$v'");
-		while ($data_card = $card->fetch_array()) {
-			array_push($carddata, [
-				"id" => $data_card['id'],
-				"primary" => $data_card['primary'],
-				"secondary" => $data_card['secondary']
-			]);
-		}
-	}
-	$getid = $groupid;
 }
 else {
 	$close = true;
+}
+if ($type == "lesson") {
+	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$getid'");
+	$data_lesson = $lesson->fetch_array();
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '{$data_lesson['group']}'");
+	$data_group = $group->fetch_array();
+}
+else if ($type == "group") {
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$getid'");
+	$data_group = $group->fetch_array();
+	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$getid'");
+	$num_lesson = $lesson->num_rows;
+}
+else if ($type = "selected") {
+	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$getid'");
+	$data_group = $group->fetch_array();
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -80,10 +48,11 @@ else {
 <link href="../css/recallcard_popup.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/jquery.min.js"></script>
 <script>
-var thislist = '<?php echo $type; ?>';
 var carddata = <?php echo json_encode($carddata); ?>;
-var listid = '<?php echo $getid; ?>';
 var currentcard = { id: 0, primary: "", secondary: "" };
+<?php if ($type == "selected") { ?>
+var selectedcode = '<?php if ($type == "selected") echo $_GET['selected']; ?>';
+<?php } ?>
 for (var i=0; i<carddata.length; i++) {
 	carddata[i].weight = 1;
 }
