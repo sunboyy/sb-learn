@@ -126,10 +126,9 @@ p {
 				  <?php } else if ($type == "group") { ?>
 				  <p>จำนวน: <?php echo $num_lesson; ?> แบบฝึกหัด</p>
 				  <?php } ?>
-				  <p>จำนวน: <?php echo $totalcard; ?> ข้อ</p>
+				  <p>จำนวน: <?php echo count($carddata); ?> ข้อ</p>
 				  <p id="showcheckp">จำนวนที่เลือก: <span id="showcheck">0</span> ข้อ <input type="button" id="btnGoSelect" value="Go" disabled="disabled" /></p>
 				  <div class="popup_button" id="buttonhide"><img src="../images/theme/<?php echo $theme; ?>/rc_hide.png" width="150" height="150" /></div><div class="popup_button highlight" id="buttonshow"><img src="../images/theme/<?php echo $theme; ?>/rc_show.png" width="150" height="150" /></div>
-				  
 				</div>
 			  </div>
 			</td>
