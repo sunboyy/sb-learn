@@ -23,11 +23,16 @@ if (isset($_POST['edit_name'])) {
 else {
 	header("Location: ../recallcard/manage.php");
 }
-$checklesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$id'");
+$stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `id` = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$checklesson = $stmt->get_result();
 if ($checklesson->num_rows == 1) {
 	$data_checklesson = $checklesson->fetch_array();
 	if ($user['id'] == $data_checklesson['user_id']) {
-		$conn->query("UPDATE `lesson` SET `name` = '$name' WHERE `id` = $id");
+		$stmt = $conn->prepare("UPDATE `lesson` SET `name` = ? WHERE `id` = ?");
+		$stmt->bind_param("si", $name, $id);
+		$stmt->execute();
 		header("Location: ../recallcard/manage.php?lesson=$id");
 	}
 }

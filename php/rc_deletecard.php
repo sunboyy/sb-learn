@@ -12,7 +12,9 @@ if ($card->num_rows == 1) {
 	$checklesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$lessonid'");
 	$data_checklesson = $checklesson->fetch_array();
 	if ($user['id'] == $data_checklesson['user_id']) {
-		$conn->query("DELETE FROM `card` WHERE `id` = $cardid");
+		$stmt = $conn->prepare("DELETE FROM `card` WHERE `id` = ?");
+		$stmt->bind_param("i", $cardid);
+		$stmt->execute();
 	}
 	header("Location: ../recallcard/manage.php?lesson=$lessonid");
 }

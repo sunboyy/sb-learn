@@ -1,4 +1,4 @@
-var currenthome = 'http://www.mrsunboy.com/edu/';
+var currenthome = '/edu/';
 $(window).load(function() {
 	$('#loading').hide('fast');
 	$('#all').fadeIn('fast');

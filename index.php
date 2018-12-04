@@ -44,8 +44,6 @@ $theme = $user['theme'];
 	</td>
   </tr>
 </table>
-<center>
-</center>
 <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

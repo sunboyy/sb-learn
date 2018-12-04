@@ -4,8 +4,10 @@ if ($user) {
 	header("Location: index.php");
 }
 if ($_POST) {
-	$qry_user = sprintf("SELECT * FROM `user` WHERE `pwd` = '%s'", $conn->real_escape_string($_POST['pwd']));
-	$user = $conn->query($qry_user);
+	$stmt = $conn->prepare("SELECT * FROM `user` WHERE `pwd` = ?");
+	$stmt->bind_param("s", $_POST['pwd']);
+	$stmt->execute();
+	$user = $stmt->get_result();
 	if ($user->num_rows == 1) {
 		$data_user = $user->fetch_array();
 		$_SESSION['user'] = $data_user['id'];

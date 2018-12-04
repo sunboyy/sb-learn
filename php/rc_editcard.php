@@ -31,14 +31,22 @@ if (isset($_POST['edit_sec'])) {
 else {
 	header("Location: ../recallcard/manage.php");
 }
-$checkcard = $conn->query("SELECT * FROM `card` WHERE `id` = '$id'");
+$stmt = $conn->prepare("SELECT * FROM `card` WHERE `id` = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$checkcard = $stmt->get_result();
 if ($checkcard->num_rows == 1) {
 	$data_checkcard = $checkcard->fetch_array();
 	$lessonid = $data_checkcard['lesson'];
-	$checklesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$lessonid'");
+	$stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `id` = ?");
+	$stmt->bind_param("i", $lessonid);
+	$stmt->execute();
+	$checklesson = $stmt->get_result();
 	$data_checklesson = $checklesson->fetch_array();
 	if ($user['id'] == $data_checklesson['user_id']) {
-		$conn->query("UPDATE `card` SET `primary` = '$pri', `secondary` = '$sec' WHERE `id` = $id");
+		$stmt = $conn->prepare("UPDATE `card` SET `primary` = ?, `secondary` = ? WHERE `id` = ?");
+		$stmt->bind_param("ssi", $pri, $sec, $id);
+		$stmt->execute();
 		header("Location: ../recallcard/manage.php?lesson=$lessonid");
 	}
 }
