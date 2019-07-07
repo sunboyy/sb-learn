@@ -21,8 +21,7 @@ else {
 	$close = true;
 }
 if ($type == "lesson") {
-	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$getid'");
-	$data_lesson = $lesson->fetch_array();
+	$lesson = get_lesson($getid);
 	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '{$data_lesson['group']}'");
 	$data_group = $group->fetch_array();
 }

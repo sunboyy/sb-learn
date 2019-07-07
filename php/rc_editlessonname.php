@@ -23,19 +23,11 @@ if (isset($_POST['edit_name'])) {
 else {
 	header("Location: ../recallcard/manage.php");
 }
-$stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `id` = ?");
-$stmt->bind_param("i", $id);
-$stmt->execute();
-$checklesson = $stmt->get_result();
-if ($checklesson->num_rows == 1) {
-	$data_checklesson = $checklesson->fetch_array();
-	if ($user['id'] == $data_checklesson['user_id']) {
-		$stmt = $conn->prepare("UPDATE `lesson` SET `name` = ? WHERE `id` = ?");
-		$stmt->bind_param("si", $name, $id);
-		$stmt->execute();
-		header("Location: ../recallcard/manage.php?lesson=$id");
-	}
+$lesson = get_lesson($id);
+if (!empty($lesson) && $user['id'] == $lesson['user_id']) {
+	$stmt = $conn->prepare("UPDATE `lesson` SET `name` = ? WHERE `id` = ?");
+	$stmt->bind_param("si", $name, $id);
+	$stmt->execute();
+	header("Location: ../recallcard/manage.php?lesson=$id");
 }
-
-echo "OK";
 ?>

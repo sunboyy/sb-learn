@@ -7,18 +7,17 @@ $theme = $user['theme'];
 
 if (isset($_GET['lesson'])) {
 	$nowlessonid = $_GET['lesson'];
-	$checklesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$nowlessonid'");
-	if ($checklesson->num_rows == 1) {
+	$lesson = get_lesson($nowlessonid);
+	if (!empty($lesson)) {
 		$onlesson = true;
-		$data_checklesson = $checklesson->fetch_array();
-		$nowlesson = $data_checklesson['name'];
-		$nowgroupid = $data_checklesson['group'];
+		$nowlesson = $lesson['name'];
+		$nowgroupid = $lesson['group'];
 		$checkgroup = $conn->query("SELECT * FROM `group` WHERE `id` = '$nowgroupid'");
 		$data_checkgroup = $checkgroup->fetch_array();
 		$nowgroup = $data_checkgroup['name'];
-		$checkcard = $conn->query("SELECT * FROM `card` WHERE `lesson` = '{$data_checklesson['id']}'");
+		$checkcard = $conn->query("SELECT * FROM `card` WHERE `lesson` = '{$lesson['id']}'");
 		$num_checkcard = $checkcard->num_rows;
-		$checkowner = $conn->query("SELECT * FROM `user` WHERE `id` = '{$data_checklesson['user_id']}'");
+		$checkowner = $conn->query("SELECT * FROM `user` WHERE `id` = '{$lesson['user_id']}'");
 		$data_checkowner = $checkowner->fetch_array();
 		$lessoningroup = $conn->query("SELECT * FROM `lesson` WHERE `group` = '".$data_checkgroup['id']."' ORDER BY `id` ASC");
 	}
@@ -87,7 +86,7 @@ function preload() {
 			    <div class="title">กลุ่ม: <?php echo $nowgroup; ?></div>
 				<div class="textbox">
                   <h3>แบบฝึกหัด: <?php echo $nowlesson; ?></h3>
-                  <p>จำนวน: <?php echo $num_checkcard; ?> ข้อ<?php if ($user['id'] == $data_checklesson['user_id']) { ?> <img src="../images/theme/<?php echo $theme; ?>/text_edit.png" width="20" height="20" class="texticon" id="managethis" lesson="<?php echo $nowlessonid; ?>" /><?php } ?></p>
+                  <p>จำนวน: <?php echo $num_checkcard; ?> ข้อ<?php if ($user['id'] == $lesson['user_id']) { ?> <img src="../images/theme/<?php echo $theme; ?>/text_edit.png" width="20" height="20" class="texticon" id="managethis" lesson="<?php echo $nowlessonid; ?>" /><?php } ?></p>
                   <p>ผู้ดูแล: <?php echo $data_checkowner['name']; ?></p>
 				</div>
 				<div class="groupbutton"><img class="button" src="../images/theme/<?php echo $theme; ?>/rctable.png" width="150" height="150" onclick="window.open('wordlist.php?type=lesson&amp;id=<?php echo $_GET['lesson']; ?>','recallcardlesson','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800px,height=500px')" /><img class="button" src="../images/theme/<?php echo $theme; ?>/rccard.png" width="150" height="150" onclick="window.open('cardlist.php?type=lesson&amp;id=<?php echo $_GET['lesson']; ?>','recallcardlesson','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800px,height=500px')" /><?php if ($num_checkcard > 1) { ?><img class="button" src="../images/theme/<?php echo $theme; ?>/rcrand.png" width="150" height="150" onclick="window.open('randomcard.php?type=lesson&amp;id=<?php echo $_GET['lesson']; ?>','recallcardlesson','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800px,height=500px')" /><?php } ?></div>

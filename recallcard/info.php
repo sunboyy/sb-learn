@@ -66,6 +66,10 @@ function preload() {
 			  <div id="mainright">
 	      <div class="title">อัพเดตล่าสุด</div>
 				<div class="list">
+				  <h3>7 JUL 2019</h3>
+				  <li>ปรับโครงสร้างโค้ด ลบไฟล์ที่ไม่ได้ใช้ แก้ปัญหา SQL injection บางส่วน</li>
+				</div>
+				<div class="list">
 				  <h3>14 JAN 2018</h3>
 				  <li>เปลี่ยนชื่อหัวเว็บให้ให้เข้ากับการใช้งานในปัจจุบัน (มุ่งสู่ห้อง K/Q ม.5 -> SB Learn)</li>
 				</div>

@@ -10,12 +10,11 @@ if (isset($_GET['lesson'])) {
 	$nowlessonid = $_GET['lesson'];
 	$onlesson = true;
 	
-	$thislesson = $conn->query("SELECT * FROM `lesson` WHERE `id` = '$nowlessonid'");
-	$data_thislesson = $thislesson->fetch_array();
-	if ($data_thislesson['user_id'] != $user['id']) {
+	$lesson = get_lesson($nowlessonid);
+	if ($lesson['user_id'] != $user['id']) {
 		header("Location: recallcard_lesson.php?lesson=$nowlessonid");
 	}
-	$groupid = $data_thislesson['group'];
+	$groupid = $lesson['group'];
 	$numrows_thislesson = $thislesson->num_rows;
 	$thisgroup = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
 	$data_thisgroup = $thisgroup->fetch_array();
