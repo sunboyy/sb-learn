@@ -9,7 +9,7 @@ $theme = $user['theme'];
 if (isset($_GET['lesson'])) {
 	$nowlessonid = $_GET['lesson'];
 	$onlesson = true;
-	
+
 	$lesson = get_lesson($nowlessonid);
 	if ($lesson['user_id'] != $user['id']) {
 		header("Location: recallcard_lesson.php?lesson=$nowlessonid");
@@ -19,7 +19,7 @@ if (isset($_GET['lesson'])) {
 	$thisgroup = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
 	$data_thisgroup = $thisgroup->fetch_array();
 	$nowgroupid = $data_thisgroup['id'];
-	
+
 	$card = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$nowlessonid' ORDER BY `id` DESC");
 	$numrows_card = $card->num_rows;
 }
@@ -35,7 +35,7 @@ else {
 <link href="../css/main.css" rel="stylesheet" type="text/css" />
 <link href="../css/main_<?php echo $theme; ?>.css" rel="stylesheet" type="text/css" />
 <link href="../css/loggedin.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 
 <body>

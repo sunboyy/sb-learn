@@ -45,7 +45,7 @@ else if ($type = "selected") {
 <link href="../css/main.css" rel="stylesheet" type="text/css" />
 <link href="../css/main_<?php echo $theme; ?>.css" rel="stylesheet" type="text/css" />
 <link href="../css/recallcard_popup.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script>
 var carddata = <?php echo json_encode($carddata); ?>;
 var currentcard = { id: 0, primary: "", secondary: "" };

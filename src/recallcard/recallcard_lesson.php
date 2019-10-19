@@ -37,7 +37,7 @@ else {
 <link href="../css/main.css" rel="stylesheet" type="text/css" />
 <link href="../css/main_<?php echo $theme; ?>.css" rel="stylesheet" type="text/css" />
 <link href="../css/loggedin.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script>
 function preload() {
 	var gidnow = <?php echo $data_checkgroup['id']; ?>;

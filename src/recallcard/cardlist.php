@@ -47,7 +47,7 @@ else if ($type = "selected") {
 <link href="../css/main.css" rel="stylesheet" type="text/css" />
 <link href="../css/main_<?php echo $theme; ?>.css" rel="stylesheet" type="text/css" />
 <link href="../css/recallcard_popup.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 var numopen = <?php echo count($carddata); ?>, groupid = '<?php echo $groupid; ?>';
 var totalcard = <?php echo count($carddata); ?>;

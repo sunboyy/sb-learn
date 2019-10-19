@@ -48,7 +48,7 @@ $numcardnow = 1;
 <link href="../css/main.css" rel="stylesheet" type="text/css" />
 <link href="../css/main_<?php echo $theme; ?>.css" rel="stylesheet" type="text/css" />
 <link href="../css/recallcard_popup.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 var groupid = '<?php echo $groupid; ?>', theme = '<?php echo $theme; ?>', state, numcheck = 0, totalcard = <?php echo count($carddata); ?>, lastselected = '0000', pad = '0000';
 <?php if ($type == "selected") { ?>

@@ -1,31 +1,24 @@
 <?php
 require_once("../php/main.php");
+require_once("core.php");
 if (!$user) {
 	header("Location: ../login.php");
 }
 $theme = $user['theme'];
 
-if ($_POST) {
-	$lsnname = htmlspecialchars(trim($_POST['lsnname']));
-	$lsngroup = $_POST['lsngroup'];
-	if (($lsnname != "") && ($lsngroup != "")) {
-		$conn->query("INSERT INTO `lesson` VALUES ('', '$lsnname', '$lsngroup', '{$user['id']}', NOW())");
-		$lastid = $conn->insert_id;
-		header("Location: manage.php?lesson=$lastid");
-	}
-}
-
 $group = $conn->query("SELECT * FROM `group` ORDER BY id ASC");
+
+$latest = $conn->query("SELECT * FROM `lesson` ORDER BY `time_created` DESC LIMIT 0, 3");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Add Lesson - Recall Card - <?php echo $title; ?></title>
+<title>Recall Card - <?php echo $title; ?></title>
 <link href="../css/main.css" rel="stylesheet" type="text/css" />
 <link href="../css/main_<?php echo $theme; ?>.css" rel="stylesheet" type="text/css" />
 <link href="../css/loggedin.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 
 <body>
@@ -44,7 +37,7 @@ $group = $conn->query("SELECT * FROM `group` ORDER BY id ASC");
   <tr>
     <td>
 	  <div id="sidebar">
-	    <div class="icon back"><img src="../images/back.png" height="50" width="50" /></div>
+	    <div class="icon home"><img src="../images/back.png" height="50" width="50" /></div>
 	    <div class="icon add"><img src="../images/add.png" height="50" width="50" /></div>
 	    <div class="icon manage"><img src="../images/gear.png" height="50" width="50" /></div>
 		<div class="high"></div>
@@ -55,36 +48,39 @@ $group = $conn->query("SELECT * FROM `group` ORDER BY id ASC");
 	  <div id="main">
 	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
 		  <tr>
-		    <td width="50%">
-	          <div id="mainleft">
-	            <div class="title">+ เพิ่มแบบฝึกหัด</div>
-				<center>
-				  <form method="post" id="form_addlesson">
-				    <table border="0" cellspacing="0" cellpadding="5">
-				      <tr>
-					    <td align="right" valign="middle">ชื่อแบบฝึกหัด:</td>
-					    <td align="left" valign="middle"><input name="lsnname" type="text" id="lsnname" maxlength="25" /></td>
-					  </tr>
-				      <tr>
-					    <td align="right" valign="middle">จัดอยู่ในกลุ่ม:</td>
-					    <td align="left" valign="middle"><span id="showgroupname">(เลือกกลุ่มจากตัวเลือกด้านขวา)</span></td>
-					  </tr>
-				      <tr>
-					    <td></td>
-					    <td align="left" valign="middle"><input name="btnAdd" type="button" id="btnAdd" value="เพิ่ม" /></td>
-					  </tr>
-				    </table>
-                    <input name="lsngroup" type="hidden" id="lsngroup" value="" />
-				  </form>
-				</center>
-		      </div>
-			</td>
-		    <td width="50%">
-	          <div id="mainright">
-			    <?php while ($data_group = $group->fetch_array()) { ?>
-			    <div class="grouplist" groupid="<?php echo $data_group['id']; ?>"><?php echo $data_group['name']; ?></div>
+		    <td width="200">
+			  <div id="mainleft">
+			    <div class="title">แบบฝึกหัดล่าสุด</div>
+			    <?php while ($data_latest = $latest->fetch_array()) {
+					$thisuserid = $data_latest['user_id'];
+					$thislessonid = $data_latest['id'];
+					$checkuser = $conn->query("SELECT * FROM `user` WHERE `id` = '$thisuserid'");
+					$data_checkuser = $checkuser->fetch_array();
+					$checkcard = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$thislessonid'");
+					$num_checkcard = $checkcard->num_rows;
+				?>
+				<div class="clicktextbox latest" lesson="<?php echo $data_latest['id']; ?>">
+				  <h3><?php echo $data_latest['name']; ?></h3>
+				  <p>จำนวน <?php echo $num_checkcard; ?> ข้อ</p>
+				  <p> โดย <?php echo $data_checkuser['name']; ?></p>
+				</div>
 				<?php } ?>
-		      </div>
+			  </div>
+			</td>
+			<td>
+			  <div id="mainright">
+				<?php foreach (get_groups() as $data_group) {
+				$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '{$data_group['id']}' ORDER BY `id` ASC");
+				$num_lesson = $lesson->num_rows; ?><div class="groupicon" group="<?php echo $data_group['id']; ?>">
+				<div class="image"><img src="../images/theme/<?php echo $theme; ?>/groupicon.png" width="200" height="176" /></div>
+				  <table border="0" cellspacing="0" cellpadding="0" width="200">
+				    <tr>
+			          <td align="left"><div class="name"><?php echo $data_group['name']; ?></div></td>
+				      <td align="right"><div class="number"><?php echo "(".$num_lesson.")"; ?></div></td>
+			        </tr>
+			      </table>
+				</div><?php } ?>
+			  </div>
 			</td>
 		  </tr>
 		</table>
@@ -93,13 +89,12 @@ $group = $conn->query("SELECT * FROM `group` ORDER BY id ASC");
   </tr>
 </table>
 <div id="hidsidebar">
-  <div class="inhid back">Back</div>
+  <div class="inhid home">Back</div>
   <div class="inhid add">New lesson</div>
   <div class="inhid manage">Manage</div>
   <div class="high"></div>
   <div class="inhid info">Info</div>
 </div>
 <script type="text/javascript" src="../js/main.js"></script>
-<script type="text/javascript" src="../js/rc_add.js"></script>
 </body>
 </html>
