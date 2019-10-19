@@ -4,23 +4,42 @@ if (empty($_SESSION['user'])) {
 	header("Location: ../login.php");
 }
 require_once("../php/connect.php");
-$usernow = mysql_query("SELECT * FROM `user` WHERE `id` = '{$_SESSION['user']}'");
+$stmt = $conn->prepare("SELECT * FROM `user` WHERE `id` = ?");
+$stmt->bind_param("i", $_SESSION['user']);
+$stmt->execute();
+$usernow = $stmt->get_result();
+
 $data_usernow = mysql_fetch_array($usernow);
 ?>
 <?php
 $nowlessonid = $_GET['subj'];
-$checklesson = mysql_query("SELECT * FROM `lesson` WHERE `id` = '$nowlessonid'");
+$stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `id` = ?");
+$stmt->bind_param("i", $nowlessonid);
+$stmt->execute();
+$checklesson = $stmt->get_result();
+
 if (mysql_num_rows($checklesson) == 1) {
 	$onlesson = true;
 	$data_checklesson = mysql_fetch_array($checklesson);
 	$nowlesson = $data_checklesson['name'];
 	$nowgroupid = $data_checklesson['group'];
-	$checkgroup = mysql_query("SELECT * FROM `group` WHERE `id` = '$nowgroupid'");
+	$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = ?");
+	$stmt->bind_param("i", $nowgroupid);
+	$stmt->execute();
+	$checkgroup = $stmt->get_result();
+
 	$data_checkgroup = mysql_fetch_array($checkgroup);
 	$nowgroup = $data_checkgroup['name'];
-	$checkcard = mysql_query("SELECT * FROM `card` WHERE `lesson` = '{$data_checklesson['id']}'");
+	$stmt = $conn->prepare("SELECT * FROM `card` WHERE `lesson` = ?");
+	$stmt->bind_param("i", $data_checklesson['id']);
+	$stmt->execute();
+	$checkcard = $stmt->get_result();
+
 	$num_checkcard = mysql_num_rows($checkcard);
-	$checkowner = mysql_query("SELECT * FROM `user` WHERE `id` = '{$data_checklesson['user_id']}'");
+	$stmt = $conn->prepare("SELECT * FROM `user` WHERE `id` = ?");
+	$stmt->bind_param("i", $data_checklesson['user_id']);
+	$stmt->execute();
+	$checkowner = $stmt->get_result();
 	$data_checkowner = mysql_fetch_array($checkowner);
 }
 else {

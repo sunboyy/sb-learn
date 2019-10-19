@@ -10,8 +10,10 @@ if ($theme == "light") {
 else if ($theme == "dark") {
 	$newtheme = "light";
 }
-$qry_settheme = sprintf("UPDATE `user` SET `theme` = '%s' WHERE `id` = %s", $conn->real_escape_string($newtheme), $conn->real_escape_string($user['id']));
-$conn->query($qry_settheme);
+
+$stmt = $conn->prepare("UPDATE `user` SET `theme` = ? WHERE `id` = ?");
+$stmt->bind_param("si", $newtheme, $user['id']);
+$stmt->execute();
 header("Location: ".$_GET['from']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
