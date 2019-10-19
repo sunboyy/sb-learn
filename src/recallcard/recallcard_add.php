@@ -57,17 +57,17 @@ $group = $conn->query("SELECT * FROM `group` ORDER BY id ASC");
 		  <tr>
 		    <td width="50%">
 	          <div id="mainleft">
-	            <div class="title">+ เพิ่มแบบฝึกหัด</div>
+	            <div class="title">+ Create new lesson</div>
 				<center>
 				  <form method="post" id="form_addlesson">
 				    <table border="0" cellspacing="0" cellpadding="5">
 				      <tr>
-					    <td align="right" valign="middle">ชื่อแบบฝึกหัด:</td>
+					    <td align="right" valign="middle">Lesson name:</td>
 					    <td align="left" valign="middle"><input name="lsnname" type="text" id="lsnname" maxlength="25" /></td>
 					  </tr>
 				      <tr>
-					    <td align="right" valign="middle">จัดอยู่ในกลุ่ม:</td>
-					    <td align="left" valign="middle"><span id="showgroupname">(เลือกกลุ่มจากตัวเลือกด้านขวา)</span></td>
+					    <td align="right" valign="middle">Group:</td>
+					    <td align="left" valign="middle"><span id="showgroupname">(Choose from the right)</span></td>
 					  </tr>
 				      <tr>
 					    <td></td>

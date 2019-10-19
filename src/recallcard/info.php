@@ -51,7 +51,7 @@ function preload() {
 		  <tr>
 		    <td width="50%">
 			  <div id="mainleft">
-	            <div class="title">เกี่ยวกับ</div>
+	            <div class="title">About</div>
 				  <div class="list">
 				    <h3>Recall Card คืออะไร</h3>
 				    <li>Recall card เป็นตัวช่วยเพิ่มความจำในเรื่องของคำและความหมายของคำ เช่น vocabulary ในภาษาอังกฤษ หรือใช้กับคำศัพท์ภาษาไทยก็ได้ หรือหากจะท่องประโยคยาวๆ อย่างเช่นสำนวนหรือสุภาษิตที่เป็นภาษาบาลีก็ทำได้</li>
@@ -64,7 +64,7 @@ function preload() {
 			</td>
 		    <td width="50%">
 			  <div id="mainright">
-	      <div class="title">อัพเดตล่าสุด</div>
+	      <div class="title">Recent updates</div>
 				<div class="list">
 				  <h3>7 JUL 2019</h3>
 				  <li>ปรับโครงสร้างโค้ด ลบไฟล์ที่ไม่ได้ใช้ แก้ปัญหา SQL injection บางส่วน</li>

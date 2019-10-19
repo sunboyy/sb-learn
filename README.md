@@ -9,3 +9,8 @@
 ## Running
 
 Run on Apache web server with PHP and MySQL installed
+
+## Usage
+
+- Add user and group by manually insert into user database.
+- Only password is required to login.

@@ -160,10 +160,10 @@ p {
           <td valign="top">
 	        <div class="half">
 		      <div id="random_left">
-                <div class="qa"> คำถาม:
+                <div class="qa"> Word:
                   <div class="insideqa" id="qbox"></div>
                 </div>
-                <div class="qa"> คำตอบ:
+                <div class="qa"> Meaning:
                   <div class="insideqa" id="atext"></div>
                   <div class="insideqa" id="abox">
 			        <p><input type="text" id="textbox_ans" value="" maxlength="50" /></p>
@@ -177,21 +177,21 @@ p {
               </div>
 	        </div>
 	        <div class="half">
-	      	  <div class="title showbig">กลุ่ม: <?php echo $data_group['name']; ?></div>
+	      	  <div class="title showbig">Group: <?php echo $data_group['name']; ?></div>
 		        <div class="textbox">
 		          <?php if ($type == "lesson") { ?>
-			      <h3 class="showbig">แบบฝึกหัด: <?php echo $data_lesson['name']; ?></h3>
+			      <h3 class="showbig">Lesson: <?php echo $data_lesson['name']; ?></h3>
 			      <?php } else if ($type == "group") { ?>
-		          <p class="showbig">จำนวน: <?php echo $num_lesson; ?> แบบฝึกหัด</p>
+		          <p class="showbig">Number of lessons: <?php echo $num_lesson; ?></p>
 			      <?php } ?>
-			      <p class="showbig">จำนวน: <?php echo count($carddata); ?> ข้อ</p>
-			      <h4 class="h4click showbig" id="continuous_title">สุ่มไปเรื่อยๆ</h4>
+			      <p class="showbig">Number of cards: <?php echo count($carddata); ?></p>
+			      <h4 class="h4click showbig" id="continuous_title">Random without score</h4>
 			      <div id="continuous" align="center">
 			        <div class="popup_button" id="random"><img src="../images/theme/<?php echo $theme; ?>/rc_random.png" width="150" height="50" /></div><div class="popup_button" id="answer"><img src="../images/theme/<?php echo $theme; ?>/rc_answer.png" width="150" height="50" /></div>
 			      </div>
-			      <h4 class="h4click showbig" id="getpoint_title">สุ่มเก็บคะแนน</h4>
+			      <h4 class="h4click showbig" id="getpoint_title">Random with score</h4>
 			      <div id="getpoint">
-			        <div class="textbox">คะแนน: <input type="text" name="point" id="point" value="0" readonly="readonly" /></div>
+			        <div class="textbox">Score: <input type="text" name="point" id="point" value="0" readonly="readonly" /></div>
 			      </div>
 		      </div>
 	        </div>
@@ -202,9 +202,9 @@ p {
   </tr>
 </table>
 <div id="hidsidebar">
-  <div class="inhid table">ตารางคำศัพท์</div>
-  <div class="inhid cards">การ์ดคำศัพท์</div>
-  <div class="inhid random">สุ่มคำศัพท์</div>
+  <div class="inhid table">List</div>
+  <div class="inhid cards">Cards</div>
+  <div class="inhid random">Random</div>
 </div>
 <script type="text/javascript" src="../js/rc_popup.js"></script>
 </body>

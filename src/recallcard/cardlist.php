@@ -97,10 +97,10 @@ p {
 		  		<div class="card">
 						<table width="160" border="0" cellspacing="0" cellpadding="0">
 							<tr>
-							<td><div class="qatitle">คำถาม:</div><div class="qbox"><?php echo $v['primary']; ?></div></td>
+							<td><div class="qatitle">Word:</div><div class="qbox"><?php echo $v['primary']; ?></div></td>
 							</tr>
 							<tr>
-							<td><div class="qatitle">คำตอบ:</div><div class="abox dark" id="a_<?php echo $v['id']; ?>" sec="<?php echo $v['secondary']; ?>" show="true" cardid="<?php echo $v['id']; ?>"></div></td>
+							<td><div class="qatitle">Meaning:</div><div class="abox dark" id="a_<?php echo $v['id']; ?>" sec="<?php echo $v['secondary']; ?>" show="true" cardid="<?php echo $v['id']; ?>"></div></td>
 							</tr>
 						</table>
 					</div>
@@ -109,15 +109,15 @@ p {
 			</td>
 			<td width="320">
 			  <div id="popup_right">
-			    <div class="title">กลุ่ม: <?php echo $data_group['name']; ?></div>
+			    <div class="title">Group: <?php echo $data_group['name']; ?></div>
 				<div class="textbox">
 				  <?php if ($type == "lesson") { ?>
-				  <h3>แบบฝึกหัด: <?php echo $data_lesson['name']; ?></h3>
+				  <h3>Lesson: <?php echo $data_lesson['name']; ?></h3>
 				  <?php } else if ($type == "group") { ?>
-				  <p>จำนวน: <?php echo $num_lesson; ?> แบบฝึกหัด</p>
+				  <p>Number of lessons: <?php echo $num_lesson; ?></p>
 				  <?php } ?>
-				  <p>จำนวน: <?php echo count($carddata); ?> ข้อ</p>
-				  <p>จำนวนป้ายที่ปิดอยู่: <span id="numopening"><?php echo count($carddata); ?></span> ข้อ <input type="button" id="btnGoSelect" value="Go" /></p>
+				  <p>Number of cards: <?php echo count($carddata); ?></p>
+				  <p>Darkened cards: <span id="numopening"><?php echo count($carddata); ?></span> <input type="button" id="btnGoSelect" value="Go" /></p>
 				  <div class="popup_button" id="ahideall"><img src="../images/theme/<?php echo $theme; ?>/rc_hide.png" width="150" height="150" /></div><div class="popup_button" id="ashowall"><img src="../images/theme/<?php echo $theme; ?>/rc_show.png" width="150" height="150" /></div>
 				</div>
 			  </div>
@@ -129,9 +129,9 @@ p {
   </tr>
 </table>
 <div id="hidsidebar">
-  <div class="inhid table">ตารางคำศัพท์</div>
-  <div class="inhid cards">การ์ดคำศัพท์</div>
-  <div class="inhid random">สุ่มคำศัพท์</div>
+  <div class="inhid table">List</div>
+  <div class="inhid cards">Cards</div>
+  <div class="inhid random">Random</div>
 </div>
 <script type="text/javascript" src="../js/rc_popup.js"></script>
 </body>

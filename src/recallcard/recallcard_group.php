@@ -78,10 +78,10 @@ function preload() {
 			</td>
 		    <td width="50%">
 			  <div id="mainright">
-			    <div class="title">กลุ่ม: <?php echo $nowgroup; ?></div>
+			    <div class="title">Group: <?php echo $nowgroup; ?></div>
 				<div class="textbox">
-				  <p>จำนวน <?php echo $numlesson_thisgroup; ?> แบบฝึกหัด</p>
-                  <p>จำนวน: <?php echo $totalcard; ?> ข้อ</p>
+				  <p>Number of lessons: <?php echo $numlesson_thisgroup; ?></p>
+                  <p>Number of cards: <?php echo $totalcard; ?></p>
 				</div>
 				<div class="groupbutton"><img class="button" src="../images/theme/<?php echo $theme; ?>/rctable.png" width="150" height="150" onclick="window.open('wordlist.php?type=group&amp;id=<?php echo $_GET['group']; ?>','recallcardlesson','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800px,height=500px')" /><img class="button" src="../images/theme/<?php echo $theme; ?>/rccard.png" width="150" height="150" onclick="window.open('cardlist.php?type=group&amp;id=<?php echo $_GET['group']; ?>','recallcardlesson','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800px,height=500px')" /><?php if ($totalcard > 1) { ?><img class="button" src="../images/theme/<?php echo $theme; ?>/rcrand.png" width="150" height="150" onclick="window.open('randomcard.php?type=group&amp;id=<?php echo $_GET['group']; ?>','recallcardlesson','toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800px,height=500px')" /><?php } ?></div>
 			  </div>

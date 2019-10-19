@@ -50,7 +50,7 @@ $latest = $conn->query("SELECT * FROM `lesson` ORDER BY `time_created` DESC LIMI
 		  <tr>
 		    <td width="200">
 			  <div id="mainleft">
-			    <div class="title">แบบฝึกหัดล่าสุด</div>
+			    <div class="title">Recent lessons</div>
 			    <?php while ($data_latest = $latest->fetch_array()) {
 					$thisuserid = $data_latest['user_id'];
 					$thislessonid = $data_latest['id'];
@@ -61,8 +61,8 @@ $latest = $conn->query("SELECT * FROM `lesson` ORDER BY `time_created` DESC LIMI
 				?>
 				<div class="clicktextbox latest" lesson="<?php echo $data_latest['id']; ?>">
 				  <h3><?php echo $data_latest['name']; ?></h3>
-				  <p>จำนวน <?php echo $num_checkcard; ?> ข้อ</p>
-				  <p> โดย <?php echo $data_checkuser['name']; ?></p>
+				  <p>Cards: <?php echo $num_checkcard; ?></p>
+				  <p>By <?php echo $data_checkuser['name']; ?></p>
 				</div>
 				<?php } ?>
 			  </div>

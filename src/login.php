@@ -14,7 +14,7 @@ if ($_POST) {
 		header("Location: index.php");
 	}
 	else {
-		$msg = "รหัสผ่านผิด";
+		$msg = "Incorrect Password";
 	}
 }
 ?>
@@ -34,16 +34,16 @@ if ($_POST) {
 <div id="darkoutside">
   <div id="center">
     <form method="post" action="" id="loginform">
-      <h3 align="left">เข้าสู่ระบบ</h3>
+      <h3 align="left">Login</h3>
       <center>
         <table border="0" cellspacing="0" cellpadding="5">
 	      <tr>
-	        <td align="right" valign="middle">รหัสผ่าน:</td>
+	        <td align="right" valign="middle">Password:</td>
 		    <td align="left" valign="middle"><input type="password" name="pwd" id="pwd" maxlength="30" autofocus /></td>
 	      </tr>
 	      <tr>
 	        <td>&nbsp;</td>
-		    <td align="left" valign="middle"><input type="submit" name="btnLogin" id="btnLogin" value="ตกลง" /></td>
+		    <td align="left" valign="middle"><input type="submit" name="btnLogin" id="btnLogin" value="Login" /></td>
 	      </tr>
 	    </table>
           <?php if (!empty($msg)) { ?>

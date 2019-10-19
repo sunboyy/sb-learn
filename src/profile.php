@@ -59,7 +59,7 @@ function preload() {
 		  <tr>
 		    <td width="50%">
 			  <div id="mainleft">
-			    <div class="title">จัดการแบบฝึกหัด</div>
+			    <div class="title">Manage Lesson</div>
 		      </div>
 			</td>
 		    <td width="50%">

@@ -67,7 +67,7 @@ else {
 		  <tr>
 		    <td width="50%">
 			  <div id="mainleft">
-			    <div class="title">จัดการแบบฝึกหัด</div>
+			    <div class="title">Manage Lesson</div>
 				  <?php foreach (get_groups() as $group) {
 					$thisgroupid = $group['id'];
 					$checklesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$thisgroupid' AND `user_id` = '{$user['id']}' ORDER BY `id` ASC");
@@ -84,21 +84,21 @@ else {
 		    <td width="50%">
 			  <div id="mainright">
 			    <?php if ($onlesson) { ?>
-			    <div class="title">กลุ่ม: <?php echo $data_thisgroup['name']; ?></div>
+			    <div class="title">Group: <?php echo $data_thisgroup['name']; ?></div>
 				<div class="textbox">
-				  <h3>แบบฝึกหัด: <?php echo $data_thislesson['name']; ?> <img id="editname" src="../images/theme/<?php echo $theme; ?>/text_edit.png" width="20" height="20" lesson="<?php echo $data_thislesson['name']; ?>" class="texticon" /> <img id="gothis" src="../images/theme/<?php echo $theme; ?>/text_go.png" width="20" height="20" lesson="<?php echo $nowlessonid; ?>" class="texticon" /></h3>
-				  <p>จำนวน: <?php echo $numrows_card ?> ข้อ</p>
+				  <h3>Lesson: <?php echo $data_thislesson['name']; ?> <img id="editname" src="../images/theme/<?php echo $theme; ?>/text_edit.png" width="20" height="20" lesson="<?php echo $data_thislesson['name']; ?>" class="texticon" /> <img id="gothis" src="../images/theme/<?php echo $theme; ?>/text_go.png" width="20" height="20" lesson="<?php echo $nowlessonid; ?>" class="texticon" /></h3>
+				  <p>Number of cards: <?php echo $numrows_card ?></p>
 				  <?php if ($numrows_card < 50) { ?>
 				  <form name="addcardform" id="addcardform" method="post" action="../php/rc_addcard.php" >
 				    <center>
 				      <table border="0" cellspacing="0" cellpadding="5">
 				        <tr>
-					      <td align="right" valign="middle">คำ:</td>
+					      <td align="right" valign="middle">Word:</td>
 					      <td align="left" valign="middle"><input type="text" name="add_pri" id="add_pri" maxlength="50" autofocus /></td>
 						  <td align="left" valign="top" rowspan="3"><img src="../php/rc_effbar.php?num=<?php echo $numrows_card; ?>" width="16" height="83" /></td>
 					    </tr>
 				        <tr>
-					      <td align="right" valign="middle">ความหมาย:</td>
+					      <td align="right" valign="middle">Meaning:</td>
 					      <td align="left" valign="middle"><input type="text" name="add_sec" id="add_sec" maxlength="50" /></td>
 					    </tr>
 				        <tr>
@@ -113,9 +113,9 @@ else {
 				<table width="100%" border="0" cellspacing="0" cellpadding="2" id="managecard">
 				  <tr align="center">
 				    <td>#</td>
-				    <td>คำ</td>
-				    <td>ความหมาย</td>
-				    <td width="50">จัดการ</td>
+				    <td>Word</td>
+				    <td>Meaning</td>
+				    <td width="50">Action</td>
 				  </tr>
 				  <?php while ($data_card = $card->fetch_array()) { ?>
 				  <tr>
@@ -138,11 +138,11 @@ else {
 <div id="darkoutside">
   <div id="center">
     <form method="post" action="../php/rc_editlessonname.php" id="editnameform">
-      <h3 align="left">แก้ไขชื่อแบบฝึกหัด</h3>
+      <h3 align="left">Edit lesson name</h3>
       <center>
         <table border="0" cellspacing="0" cellpadding="5">
 	      <tr>
-	        <td align="right" valign="middle">ชื่อแบบฝึกหัด:</td>
+	        <td align="right" valign="middle">Lesson name:</td>
 		    <td align="left" valign="middle"><input type="text" name="edit_name" id="edit_name" maxlength="25" placeholder="<?php echo $data_thislesson['name']; ?>" value="<?php echo $data_thislesson['name']; ?>" /></td>
 	      </tr>
 	      <tr>
@@ -153,15 +153,15 @@ else {
 	  </center>
     </form>
     <form method="post" action="../php/rc_editcard.php" id="editcardform">
-      <h3 align="left">แก้ไขการ์ดหมายเลข <span id="cardid_show"></span></h3>
+      <h3 align="left">Edit card #<span id="cardid_show"></span></h3>
       <center>
         <table border="0" cellspacing="0" cellpadding="5">
 	      <tr>
-	        <td align="right" valign="middle">คำ:</td>
+	        <td align="right" valign="middle">Word:</td>
 		    <td align="left" valign="middle"><input type="text" name="edit_pri" id="edit_pri" maxlength="50" placeholder="" value="" /></td>
 	      </tr>
 	      <tr>
-	        <td align="right" valign="middle">ความหมาย:</td>
+	        <td align="right" valign="middle">Meaning:</td>
 		    <td align="left" valign="middle"><input type="text" name="edit_sec" id="edit_sec" maxlength="50" placeholder="" value="" /></td>
 	      </tr>
 	      <tr>
