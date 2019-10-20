@@ -82,7 +82,6 @@ $latest = $conn->query("SELECT * FROM `lesson` ORDER BY `time_created` DESC LIMI
 				$stmt->bind_param("i", $data_group['id']);
 				$stmt->execute();
 				$lesson = $stmt->get_result();
-				$data_checkuser = $checkuser->fetch_array();
 
 				$num_lesson = $lesson->num_rows; ?><div class="groupicon" group="<?php echo $data_group['id']; ?>">
 				<div class="image"><img src="../images/theme/<?php echo $theme; ?>/groupicon.png" width="200" height="176" /></div>

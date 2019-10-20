@@ -10,7 +10,7 @@ if ($_POST) {
 	$lsngroup = $_POST['lsngroup'];
 	if (($lsnname != "") && ($lsngroup != "")) {
 		$stmt = $conn->prepare("INSERT INTO `lesson` VALUES ('', ?, ?, ?, NOW())");
-		$stmt->bind_param("ssi", $lsnname, $lsngroup, $user['id']);
+		$stmt->bind_param("sii", $lsnname, $lsngroup, $user['id']);
 		$stmt->execute();
 		$lastid = $conn->insert_id;
 		header("Location: manage.php?lesson=$lastid");

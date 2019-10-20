@@ -25,9 +25,7 @@ if ($type == "lesson") {
 	$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = ?");
 	$stmt->bind_param("i", $data_lesson['group']);
 	$stmt->execute();
-	$thisgroup = $stmt->get_result();
-	$data_thisgroup = $thisgroup->fetch_array();
-	$data_group = $group->fetch_array();
+	$group = $stmt->get_result();
 }
 else if ($type == "group") {
 	$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = ?");
@@ -43,7 +41,7 @@ else if ($type == "group") {
 	$num_lesson = $lesson->num_rows;
 }
 else if ($type = "selected") {
-	$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = '$getid'");
+	$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = ?");
 	$stmt->bind_param("i", $getid);
 	$stmt->execute();
 	$group = $stmt->get_result();

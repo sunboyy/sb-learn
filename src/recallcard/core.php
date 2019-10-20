@@ -36,7 +36,7 @@ function get_cards($type, $value) {
     }
     else if ($type == "lesson") {
         $stmt = $conn->prepare("SELECT * FROM `card` WHERE `lesson` = ?");
-        $stmt->bind_param("s", $value);
+        $stmt->bind_param("i", $value);
         $stmt->execute();
         $qry_cards = $stmt->get_result();
         while ($row_cards = $qry_cards->fetch_array()) {
