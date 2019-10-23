@@ -26,6 +26,7 @@ if ($type == "lesson") {
 	$stmt->bind_param("i", $data_lesson['group']);
 	$stmt->execute();
 	$group = $stmt->get_result();
+	$data_group = $group->fetch_array();
 }
 else if ($type == "group") {
 	$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = ?");
