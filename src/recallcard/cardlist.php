@@ -22,19 +22,32 @@ else {
 }
 if ($type == "lesson") {
 	$lesson = get_lesson($getid);
-	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '{$lesson['group']}'");
+	$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = ?");
+	$stmt->bind_param("i", $lesson['group']);
+	$stmt->execute();
+	$group = $stmt->get_result();
 	$data_group = $group->fetch_array();
 	$groupid = $data_group['id'];
 }
 else if ($type == "group") {
-	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$getid'");
+	$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = ?");
+	$stmt->bind_param("i", $getid);
+	$stmt->execute();
+	$group = $stmt->get_result();
 	$data_group = $group->fetch_array();
-	$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$getid'");
+
+	$stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `group` = ?");
+	$stmt->bind_param("i", $getid);
+	$stmt->execute();
+	$lesson = $stmt->get_result();
 	$num_lesson = $lesson->num_rows;
 	$groupid = $_GET['id'];
 }
 else if ($type = "selected") {
-	$group = $conn->query("SELECT * FROM `group` WHERE `id` = '$getid'");
+	$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = ?");
+	$stmt->bind_param("i", $getid);
+	$stmt->execute();
+	$group = $stmt->get_result();
 	$data_group = $group->fetch_array();
 	$groupid = $_GET['id'];
 }

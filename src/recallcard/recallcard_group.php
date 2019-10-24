@@ -6,19 +6,31 @@ if (!$user) {
 $theme = $user['theme'];
 
 $nowgroupid = $_GET['group'];
-$checkgroup = $conn->query("SELECT * FROM `group` WHERE `id` = '$nowgroupid'");
+$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = ?");
+$stmt->bind_param("i", $nowgroupid);
+$stmt->execute();
+$checkgroup = $stmt->get_result();
 if ($checkgroup->num_rows == 1) {
 	$data_checkgroup = $checkgroup->fetch_array();
 	$nowgroup = $data_checkgroup['name'];
-	$checklesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$nowgroupid'");
+	$stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `group` = ?");
+	$stmt->bind_param("i", $nowgroupid);
+	$stmt->execute();
+	$checklesson = $stmt->get_result();
 	$numlesson_thisgroup = $checklesson->num_rows;
 	$totalcard = 0;
 	while ($data_checklesson = $checklesson->fetch_array()) {
-		$thislesson = $conn->query("SELECT * FROM `card` WHERE `lesson` = '{$data_checklesson['id']}'");
+		$stmt = $conn->prepare("SELECT * FROM `card` WHERE `lesson` = ?");
+		$stmt->bind_param("i", $data_checklesson['id']);
+		$stmt->execute();
+		$thislesson = $stmt->get_result();
 		$num_thislesson = $thislesson->num_rows;
 		$totalcard += $num_thislesson;
 	}
-	$lessonlist = $conn->query("SELECT * FROM `lesson` WHERE `group` = '$nowgroupid' ORDER BY `id` ASC");
+	$stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `group` = ? ORDER BY `id` ASC");
+	$stmt->bind_param("i", $nowgroupid);
+	$stmt->execute();
+	$lessonlist = $stmt->get_result();
 }
 else {
 	header("Location: recallcard.php");

@@ -12,14 +12,30 @@ if (isset($_GET['lesson'])) {
 		$onlesson = true;
 		$nowlesson = $lesson['name'];
 		$nowgroupid = $lesson['group'];
-		$checkgroup = $conn->query("SELECT * FROM `group` WHERE `id` = '$nowgroupid'");
+		$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = ?");
+		$stmt->bind_param("i", $nowgroupid);
+		$stmt->execute();
+		$checkgroup = $stmt->get_result();
+
 		$data_checkgroup = $checkgroup->fetch_array();
 		$nowgroup = $data_checkgroup['name'];
-		$checkcard = $conn->query("SELECT * FROM `card` WHERE `lesson` = '{$lesson['id']}'");
+		$stmt = $conn->prepare("SELECT * FROM `card` WHERE `lesson` = ?");
+		$stmt->bind_param("i", $lesson['id']);
+		$stmt->execute();
+		$checkcard = $stmt->get_result();
+
 		$num_checkcard = $checkcard->num_rows;
-		$checkowner = $conn->query("SELECT * FROM `user` WHERE `id` = '{$lesson['user_id']}'");
+		$stmt = $conn->prepare("SELECT * FROM `user` WHERE `id` = ?");
+		$stmt->bind_param("i", $lesson['user_id']);
+		$stmt->execute();
+		$checkowner = $stmt->get_result();
+
 		$data_checkowner = $checkowner->fetch_array();
-		$lessoningroup = $conn->query("SELECT * FROM `lesson` WHERE `group` = '".$data_checkgroup['id']."' ORDER BY `id` ASC");
+		$num_checkcard = $checkcard->num_rows;
+		$stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `group` = ? ORDER BY `id` ASC");
+		$stmt->bind_param("i", $data_checkgroup['id']);
+		$stmt->execute();
+		$lessoningroup = $stmt->get_result();
 	}
 	else {
 		header("Location: recallcard.php");

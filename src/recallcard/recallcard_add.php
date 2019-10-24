@@ -9,7 +9,9 @@ if ($_POST) {
 	$lsnname = htmlspecialchars(trim($_POST['lsnname']));
 	$lsngroup = $_POST['lsngroup'];
 	if (($lsnname != "") && ($lsngroup != "")) {
-		$conn->query("INSERT INTO `lesson` VALUES ('', '$lsnname', '$lsngroup', '{$user['id']}', NOW())");
+		$stmt = $conn->prepare("INSERT INTO `lesson` VALUES ('', ?, ?, ?, NOW())");
+		$stmt->bind_param("sii", $lsnname, $lsngroup, $user['id']);
+		$stmt->execute();
 		$lastid = $conn->insert_id;
 		header("Location: manage.php?lesson=$lastid");
 	}

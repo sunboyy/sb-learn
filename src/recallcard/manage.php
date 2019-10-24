@@ -16,7 +16,10 @@ if (isset($_GET['lesson'])) {
 	}
 	$groupid = $lesson['group'];
 	$numrows_thislesson = $thislesson->num_rows;
-	$thisgroup = $conn->query("SELECT * FROM `group` WHERE `id` = '$groupid'");
+	$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = ?");
+	$stmt->bind_param("i", $groupid);
+	$stmt->execute();
+	$thisgroup = $stmt->get_result();
 	$data_thisgroup = $thisgroup->fetch_array();
 	$nowgroupid = $data_thisgroup['id'];
 

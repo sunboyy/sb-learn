@@ -12,8 +12,10 @@ function get_groups() {
 }
 function get_lessons($group) {
     global $conn;
-    $sql_lessons = "SELECT * FROM `lesson` WHERE `group` = $group ORDER BY `id` ASC";
-    $qry_lessons = $conn->query($sql_lessons);
+    $stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `group` = ? ORDER BY `id` ASC");
+    $stmt->bind_param("i", $group);
+    $stmt->execute();
+    $qry_lessons = $stmt->get_result();
     $lessons = array();
     while ($row_lessons = $qry_lessons->fetch_array()) {
         array_push($lessons, $row_lessons);
@@ -24,15 +26,19 @@ function get_cards($type, $value) {
     global $conn;
     $cards = array();
     if ($type == "group") {
-        $sql_cards = "SELECT * FROM `card` WHERE `group` = $value";
-        $qry_cards = $conn->query($sql_cards);
+        $stmt = $conn->prepare("SELECT * FROM `card` WHERE `group` = ?");
+        $stmt->bind_param("i", $value);
+        $stmt->execute();
+        $qry_cards = $stmt->get_result();
         while ($row_cards = $qry_cards->fetch_array()) {
             array_push($cards, $row_cards);
         }
     }
     else if ($type == "lesson") {
-        $sql_cards = "SELECT * FROM `card` WHERE `lesson` = $value";
-        $qry_cards = $conn->query($sql_cards);
+        $stmt = $conn->prepare("SELECT * FROM `card` WHERE `lesson` = ?");
+        $stmt->bind_param("i", $value);
+        $stmt->execute();
+        $qry_cards = $stmt->get_result();
         while ($row_cards = $qry_cards->fetch_array()) {
             array_push($cards, $row_cards);
         }

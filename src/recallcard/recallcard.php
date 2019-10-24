@@ -54,9 +54,17 @@ $latest = $conn->query("SELECT * FROM `lesson` ORDER BY `time_created` DESC LIMI
 			    <?php while ($data_latest = $latest->fetch_array()) {
 					$thisuserid = $data_latest['user_id'];
 					$thislessonid = $data_latest['id'];
-					$checkuser = $conn->query("SELECT * FROM `user` WHERE `id` = '$thisuserid'");
+					$stmt = $conn->prepare("SELECT * FROM `user` WHERE `id` = ?");
+					$stmt->bind_param("i", $thisuserid);
+					$stmt->execute();
+					$checkuser = $stmt->get_result();
+
 					$data_checkuser = $checkuser->fetch_array();
-					$checkcard = $conn->query("SELECT * FROM `card` WHERE `lesson` = '$thislessonid'");
+					$stmt = $conn->prepare("SELECT * FROM `card` WHERE `lesson` = ?");
+					$stmt->bind_param("i", $thislessonid);
+					$stmt->execute();
+					$checkcard = $stmt->get_result();
+
 					$num_checkcard = $checkcard->num_rows;
 				?>
 				<div class="clicktextbox latest" lesson="<?php echo $data_latest['id']; ?>">
@@ -70,7 +78,11 @@ $latest = $conn->query("SELECT * FROM `lesson` ORDER BY `time_created` DESC LIMI
 			<td>
 			  <div id="mainright">
 				<?php foreach (get_groups() as $data_group) {
-				$lesson = $conn->query("SELECT * FROM `lesson` WHERE `group` = '{$data_group['id']}' ORDER BY `id` ASC");
+				$stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `group` = ? ORDER BY `id` ASC");
+				$stmt->bind_param("i", $data_group['id']);
+				$stmt->execute();
+				$lesson = $stmt->get_result();
+
 				$num_lesson = $lesson->num_rows; ?><div class="groupicon" group="<?php echo $data_group['id']; ?>">
 				<div class="image"><img src="../images/theme/<?php echo $theme; ?>/groupicon.png" width="200" height="176" /></div>
 				  <table border="0" cellspacing="0" cellpadding="0" width="200">
