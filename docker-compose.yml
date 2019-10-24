@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+    app:
+        container_name: "webApp"
+        build: .
+        volumes:
+            - ./:/var/www/html
+        depends_on:
+          - mysql
+        ports:
+          - 8090:80
+    mysql:
+        image: mysql:5.7
+        restart: always
+        ports:
+            - "3310:3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=appDB
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=root
+        container_name: "appDB"
+        volumes:
+            - ./db-data:/var/lib/mysql:cached
