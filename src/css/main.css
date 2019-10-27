@@ -34,7 +34,6 @@ body {
 	width: 100%;
 }
 #topbar {
-	width: 100%;
 	height: 50px;
 	background-color: #222;
 	padding: 0px;
@@ -219,23 +218,23 @@ body {
 	display: none;
 }
 #darkoutside {
-	width: 100%;
+	width: 100vw;
 	height: 100vh;
 	z-index: 1;
 	margin: 0px;
-	text-align: center;
 	background-color: rgba(0, 0, 0, .7);
 	display: none;
-	position: absolute;
-	left: 0px;
-	top: 0px;
+	position: fixed;
+	left: 0;
+	top: 0;
 }
 #center {
 	position: fixed;
 	width: 400px;
 	height: 200px;
-	left: 50px;
-	top: 50px;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 	padding: 0px 5px 5px 5px;
 	vertical-align: middle;
 	line-height: 40px;
@@ -244,6 +243,7 @@ body {
 	margin: 0px;
 	padding: 5px;
 	font-weight: bold;
+	display: none;
 }
 .dark {
 	background-color: #000;

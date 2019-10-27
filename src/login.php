@@ -3,20 +3,6 @@ require_once("php/main.php");
 if ($user) {
 	header("Location: index.php");
 }
-if ($_POST) {
-	$stmt = $conn->prepare("SELECT * FROM `user` WHERE `pwd` = ?");
-	$stmt->bind_param("s", $_POST['pwd']);
-	$stmt->execute();
-	$user = $stmt->get_result();
-	if ($user->num_rows == 1) {
-		$data_user = $user->fetch_array();
-		$_SESSION['user'] = $data_user['id'];
-		header("Location: index.php");
-	}
-	else {
-		$msg = "Incorrect Password";
-	}
-}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -33,10 +19,10 @@ if ($_POST) {
 <body>
 <div id="darkoutside">
   <div id="center">
-    <form method="post" action="" id="loginform">
-      <h3 align="left">Login</h3>
+    <form id="loginform">
+      <h3>Login</h3>
       <center>
-        <table border="0" cellspacing="0" cellpadding="5">
+        <table cellspacing="0" cellpadding="5">
 	      <tr>
 	        <td align="right" valign="middle">Password:</td>
 		    <td align="left" valign="middle"><input type="password" name="pwd" id="pwd" maxlength="30" autofocus /></td>
@@ -46,9 +32,7 @@ if ($_POST) {
 		    <td align="left" valign="middle"><input type="submit" name="btnLogin" id="btnLogin" value="Login" /></td>
 	      </tr>
 	    </table>
-          <?php if (!empty($msg)) { ?>
-          <div class="msg"><?php echo $msg; ?></div>
-          <?php } ?>
+        <div class="msg" id="errorMsg"></div>
 	  </center>
     </form>
   </div>

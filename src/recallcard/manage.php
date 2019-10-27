@@ -141,7 +141,7 @@ else {
 <div id="darkoutside">
   <div id="center">
     <form method="post" action="../php/rc_editlessonname.php" id="editnameform">
-      <h3 align="left">Edit lesson name</h3>
+      <h3>Edit lesson name</h3>
       <center>
         <table border="0" cellspacing="0" cellpadding="5">
 	      <tr>

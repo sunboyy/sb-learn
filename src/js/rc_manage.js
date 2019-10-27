@@ -1,13 +1,3 @@
-$(document).ready(function() {
-	var width = $(window).width(), height = $(window).height();
-	$('#center').css('left', ((width / 2) - 200)+'px');
-	$('#center').css('top', ((height / 2) - 100)+'px');
-});
-$(window).resize(function() {
-	var width = $(window).width(), height = $(window).height();
-	$('#center').css('left', ((width / 2) - 200)+'px');
-	$('#center').css('top', ((height / 2) - 100)+'px');
-});
 $('.groupmenu').click(function() {
 	var groupid = $(this).attr('group');
 	$('.lessongroup[group='+groupid+']').toggle('fast');
