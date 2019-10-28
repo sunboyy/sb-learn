@@ -15,3 +15,11 @@ function getLessonByGroupId($conn, $groupId)
     $stmt->execute();
     return $stmt->get_result();
 }
+
+function getLessonByGroupIdWithSorting($conn, $groupId)
+{
+    $stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `group` = ? ORDER BY `id` ASC");
+    $stmt->bind_param("i", $groupId);
+    $stmt->execute();
+    return $stmt->get_result();
+}
