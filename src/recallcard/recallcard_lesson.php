@@ -1,5 +1,10 @@
 <?php
 require_once("../php/main.php");
+require_once("../php/repository/cardRepository.php");
+require_once("../php/repository/groupRepository.php");
+require_once("../php/repository/lessonRepository.php");
+require_once("../php/repository/userRepository.php");
+
 if (!$user) {
 	header("Location: ../login.php");
 }
@@ -9,33 +14,24 @@ if (isset($_GET['lesson'])) {
 	$nowlessonid = $_GET['lesson'];
 	$lesson = get_lesson($nowlessonid);
 	if (!empty($lesson)) {
+
 		$onlesson = true;
 		$nowlesson = $lesson['name'];
 		$nowgroupid = $lesson['group'];
-		$stmt = $conn->prepare("SELECT * FROM `group` WHERE `id` = ?");
-		$stmt->bind_param("i", $nowgroupid);
-		$stmt->execute();
-		$checkgroup = $stmt->get_result();
+
+        $checkgroup = getGroupById($conn, $nowgroupid);
 
 		$data_checkgroup = $checkgroup->fetch_array();
 		$nowgroup = $data_checkgroup['name'];
-		$stmt = $conn->prepare("SELECT * FROM `card` WHERE `lesson` = ?");
-		$stmt->bind_param("i", $lesson['id']);
-		$stmt->execute();
-		$checkcard = $stmt->get_result();
+		$checkcard = getCardByLessonId($conn, $lesson['id']);
 
 		$num_checkcard = $checkcard->num_rows;
-		$stmt = $conn->prepare("SELECT * FROM `user` WHERE `id` = ?");
-		$stmt->bind_param("i", $lesson['user_id']);
-		$stmt->execute();
-		$checkowner = $stmt->get_result();
+
+        $checkowner = getUserById($conn, $lesson['user_id']);
 
 		$data_checkowner = $checkowner->fetch_array();
 		$num_checkcard = $checkcard->num_rows;
-		$stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `group` = ? ORDER BY `id` ASC");
-		$stmt->bind_param("i", $data_checkgroup['id']);
-		$stmt->execute();
-		$lessoningroup = $stmt->get_result();
+        $lessoningroup = getLessonByGroupIdWithSorting($conn, $data_checkgroup['id']);
 	}
 	else {
 		header("Location: recallcard.php");

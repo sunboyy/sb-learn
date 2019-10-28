@@ -4,7 +4,6 @@ require_once ("../php/repository/groupRepository.php");
 require_once ("../php/repository/lessonRepository.php");
 require_once ("../php/repository/cardRepository.php");
 
-
 if (!$user) {
 	header("Location: ../login.php");
 }
@@ -22,18 +21,11 @@ if ($checkgroup->num_rows == 1) {
 	$totalcard = 0;
 
 	while ($data_checklesson = $checklesson->fetch_array()) {
-//		$stmt = $conn->prepare("SELECT * FROM `card` WHERE `lesson` = ?");
-//		$stmt->bind_param("i", $data_checklesson['id']);
-//		$stmt->execute();
-//		$thislesson = $stmt->get_result();
-
+        $thislesson = getCardByLessonId($conn, $data_checklesson['id']);
 		$num_thislesson = $thislesson->num_rows;
 		$totalcard += $num_thislesson;
 	}
-	$stmt = $conn->prepare("SELECT * FROM `lesson` WHERE `group` = ? ORDER BY `id` ASC");
-	$stmt->bind_param("i", $nowgroupid);
-	$stmt->execute();
-	$lessonlist = $stmt->get_result();
+    $lessonlist = getLessonByGroupIdWithSorting($conn, $nowgroupid);
 }
 else {
 	header("Location: recallcard.php");
