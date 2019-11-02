@@ -1,9 +1,6 @@
 <?php
 require_once("../php/main.php");
-require_once("../php/repository/cardRepository.php");
-require_once("../php/repository/groupRepository.php");
-require_once("../php/repository/lessonRepository.php");
-require_once("../php/repository/userRepository.php");
+require_once("./core.php");
 
 if (!$user) {
 	header("Location: ../login.php");
