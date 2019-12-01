@@ -1,6 +1,7 @@
 <?php
 require_once("../php/main.php");
 require_once("core.php");
+
 if (!$user) {
 	header("Location: ../login.php");
 }

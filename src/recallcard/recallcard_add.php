@@ -9,7 +9,7 @@ if ($_POST) {
 	$lsnname = htmlspecialchars(trim($_POST['lsnname']));
 	$lsngroup = $_POST['lsngroup'];
 	if (($lsnname != "") && ($lsngroup != "")) {
-		$stmt = $conn->prepare("INSERT INTO `lesson` VALUES ('', ?, ?, ?, NOW())");
+		$stmt = $conn->prepare("INSERT INTO `lesson` VALUES ( NULL , ?, ?, ?, NOW())");
 		$stmt->bind_param("sii", $lsnname, $lsngroup, $user['id']);
 		$stmt->execute();
 		$lastid = $conn->insert_id;
