@@ -1,5 +1,12 @@
 # SB Learn
 
+A simple and configurable flashcard web application.
+
+## Requirements
+
+- Apache with PHP support
+- MySQL with connector from PHP
+
 ## Setting up
 
 - Create MySQL database
@@ -14,3 +21,7 @@ Run on Apache web server with PHP and MySQL installed
 
 - Add user and group by manually insert into user database.
 - Only password is required to login.
+
+## Contribution
+
+Feel free to contribute to this project. However, only bug fixes are open for contribution since we are going to develop a new version based on newer architecture and newer technology like React or Angular for front-end development and Node.js for back-end development. The decision will be made soon. Any update to the new version of SB Learn will be reported in this repository.
