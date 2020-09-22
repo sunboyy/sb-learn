@@ -17,6 +17,11 @@ A simple and configurable flashcard web application.
 
 Run on Apache web server with PHP and MySQL installed
 
+## Running on docker
+
+You need to have docker and docker-compose installed, then ru this command to get the app running
+`make up`
+
 ## Usage
 
 - Add user and group by manually insert into user database.
